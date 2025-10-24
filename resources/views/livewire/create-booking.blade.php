@@ -87,7 +87,7 @@
                                 Vehicle Details
                             </h3>
                             <div class="flex items-center space-x-4 mb-6">
-                                <img src="{{ $vehicle->main_image ?: 'https://via.placeholder.com/120x80?text=Vehicle' }}" 
+                                <img src="{{ $vehicle->getMainImageUrl() }}" 
                                      alt="{{ $vehicle->name }}" 
                                      class="w-32 h-20 object-cover rounded-lg shadow-lg">
                                 <div>
