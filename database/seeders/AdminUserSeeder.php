@@ -29,6 +29,13 @@ class AdminUserSeeder extends Seeder
                 'role' => 'admin',
                 'email_verified_at' => now(),
             ],
+            [
+                'name' => 'Chris Vincent Wife',
+                'email' => 'chris.wife@example.com',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'email_verified_at' => now(),
+            ],
         ];
 
         foreach ($adminUsers as $adminData) {
