@@ -118,9 +118,11 @@ class VehicleSeeder extends Seeder
 
     private function addVehicleImages(Vehicle $vehicle, string $type): void
     {
+        // Use the default filesystem disk configuration
+        $disk = config('filesystems.default');
+        
         // Use local images from storage
         $localImages = $this->getLocalImagesForType($type);
-        $disk = config('filesystems.default', 'local');
         
         foreach ($localImages as $index => $imagePath) {
             try {

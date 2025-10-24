@@ -28,8 +28,8 @@ class DownloadVehicleImages extends Command
     {
         $this->info('Downloading vehicle images...');
         
-        // Use the configured filesystem disk (S3 in production)
-        $disk = config('filesystems.default', 'local');
+        // Use the default filesystem disk configuration
+        $disk = config('filesystems.default');
         $storage = Storage::disk($disk);
         
         // Create storage directory if it doesn't exist

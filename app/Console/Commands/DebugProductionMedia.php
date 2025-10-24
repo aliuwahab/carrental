@@ -22,23 +22,23 @@ class DebugProductionMedia extends Command
         $this->info('  S3 bucket: ' . config('filesystems.disks.s3.bucket'));
         $this->info('  S3 endpoint: ' . config('filesystems.disks.s3.endpoint'));
         
-        // Test S3 connection
-        $this->info('🔗 Testing S3 Connection:');
+        // Test R2 connection
+        $this->info('🔗 Testing R2 Connection:');
         try {
-            $files = Storage::disk('s3')->allFiles();
-            $this->info('  ✅ S3 connection successful');
-            $this->info('  📄 Files in S3: ' . count($files));
+            $files = Storage::disk('r2')->allFiles();
+            $this->info('  ✅ R2 connection successful');
+            $this->info('  📄 Files in R2: ' . count($files));
             if (count($files) > 0) {
                 $this->info('  📄 Sample file: ' . $files[0]);
             }
         } catch (\Exception $e) {
-            $this->error('  ❌ S3 connection failed: ' . $e->getMessage());
+            $this->error('  ❌ R2 connection failed: ' . $e->getMessage());
         }
         
         // Test signed URL generation
         $this->info('🔐 Testing Signed URL Generation:');
         try {
-            $testUrl = Storage::disk('s3')->temporaryUrl('vehicle-images/sedan-1.jpg', now()->addHours(24));
+            $testUrl = Storage::disk('r2')->temporaryUrl('vehicle-images/sedan-1.jpg', now()->addHours(24));
             $this->info('  ✅ Signed URL generation works');
             $this->info('  🔗 Sample signed URL: ' . substr($testUrl, 0, 100) . '...');
             

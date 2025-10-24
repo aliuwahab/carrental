@@ -93,13 +93,16 @@ class Vehicle extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
+        // Use the default filesystem disk configuration
+        $disk = config('filesystems.default');
+
         $this->addMediaCollection('main_image')
             ->singleFile()
-            ->useDisk(config('filesystems.default', 's3'));
+            ->useDisk($disk);
 
         $this->addMediaCollection('gallery')
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp'])
-            ->useDisk(config('filesystems.default', 's3'));
+            ->useDisk($disk);
     }
 
     /**
@@ -112,12 +115,15 @@ class Vehicle extends Model implements HasMedia
             return null;
         }
 
-        // If using S3/R2, generate signed URL for private access
-        if ($media->disk === 's3') {
+        // Check if the URL is from R2 (contains the R2 domain) or disk is s3
+        $url = $media->getUrl();
+        $isR2Url = str_contains($url, 'r2.cloudflarestorage.com') || $media->disk === 's3';
+        
+        if ($isR2Url) {
             return $media->getTemporaryUrl(now()->addHours(24));
         }
 
-        return $media->getUrl();
+        return $url;
     }
 
     /**
@@ -128,12 +134,15 @@ class Vehicle extends Model implements HasMedia
         $gallery = $this->getMedia('gallery');
         
         return $gallery->map(function ($media) {
-            // If using S3/R2, generate signed URL for private access
-            if ($media->disk === 's3') {
+            // Check if the URL is from R2 (contains the R2 domain) or disk is s3
+            $url = $media->getUrl();
+            $isR2Url = str_contains($url, 'r2.cloudflarestorage.com') || $media->disk === 's3';
+            
+            if ($isR2Url) {
                 return $media->getTemporaryUrl(now()->addHours(24));
             }
             
-            return $media->getUrl();
+            return $url;
         })->toArray();
     }
 }
