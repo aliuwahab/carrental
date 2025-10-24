@@ -90,7 +90,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Determine if the user can access Filament admin panel.
      */
-    public function canAccessFilament(): bool
+    public function canAccessPanel(\Filament\Panel $panel): bool
     {
         return $this->isAdmin();
     }
