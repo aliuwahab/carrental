@@ -190,20 +190,20 @@
 
                     <!-- Availability Status -->
                     @if($startDate && $endDate)
-                        <div class="mb-6">
+                        <div class="mb-4 lg:mb-6">
                             @if($isAvailable)
-                                <div class="flex items-center space-x-3 p-4 bg-green-50 border border-green-200 rounded-xl">
-                                    <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <div class="flex items-center space-x-2 lg:space-x-3 p-3 lg:p-4 bg-green-50 border border-green-200 rounded-lg lg:rounded-xl">
+                                    <svg class="w-5 h-5 lg:w-6 lg:h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                     </svg>
-                                    <span class="font-semibold text-green-800">Available for selected dates</span>
+                                    <span class="text-sm lg:text-base font-semibold text-green-800">Available for selected dates</span>
                                 </div>
                             @else
-                                <div class="flex items-center space-x-3 p-4 bg-red-50 border border-red-200 rounded-xl">
-                                    <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                <div class="flex items-center space-x-2 lg:space-x-3 p-3 lg:p-4 bg-red-50 border border-red-200 rounded-lg lg:rounded-xl">
+                                    <svg class="w-5 h-5 lg:w-6 lg:h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                                     </svg>
-                                    <span class="font-semibold text-red-800">Not available for selected dates</span>
+                                    <span class="text-sm lg:text-base font-semibold text-red-800">Not available for selected dates</span>
                                 </div>
                             @endif
                         </div>
