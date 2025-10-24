@@ -19,6 +19,29 @@ Route::get('/vehicles', VehicleListing::class)->name('vehicles.index');
 Route::get('/vehicles/{vehicle:slug}', VehicleDetail::class)->name('vehicles.show');
 Route::get('/book/{vehicle:slug}', CreateBooking::class)->name('booking.create');
 
+// Debug route for admin access
+Route::get('/debug-admin', function () {
+    if (!auth()->check()) {
+        return 'Not authenticated';
+    }
+    
+    $user = auth()->user();
+    return [
+        'authenticated' => true,
+        'user_id' => $user->id,
+        'user_name' => $user->name,
+        'user_email' => $user->email,
+        'user_role' => $user->role,
+        'is_admin' => $user->isAdmin(),
+        'session_id' => session()->getId(),
+    ];
+})->middleware('auth');
+
+// Debug route for admin middleware
+Route::get('/debug-admin-middleware', function () {
+    return 'Admin middleware passed! User: ' . auth()->user()->name;
+})->middleware(['auth', 'admin']);
+
 Route::get('dashboard', Dashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
