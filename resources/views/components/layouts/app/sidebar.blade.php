@@ -76,9 +76,29 @@
             </flux:dropdown>
         </flux:sidebar>
 
-        <!-- Mobile User Menu -->
+        <!-- Mobile Header with Breadcrumbs -->
         <flux:header class="lg:hidden">
-            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+            @if(request()->routeIs('home') || request()->routeIs('vehicles.index'))
+                <!-- Breadcrumb Navigation for Home and Vehicles -->
+                <div class="flex items-center space-x-2 text-sm">
+                    <a href="{{ route('home') }}" class="text-blue-600 hover:text-blue-800 font-medium">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                        </svg>
+                    </a>
+                    <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    @if(request()->routeIs('home'))
+                        <span class="text-gray-600 font-medium">Home</span>
+                    @elseif(request()->routeIs('vehicles.index'))
+                        <span class="text-gray-600 font-medium">Vehicles</span>
+                    @endif
+                </div>
+            @else
+                <!-- Default Mobile Menu for other pages -->
+                <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+            @endif
 
             <flux:spacer />
 
@@ -106,6 +126,22 @@
                                 </div>
                             </div>
                         </div>
+                    </flux:menu.radio.group>
+
+                    <flux:menu.separator />
+
+                    <flux:menu.radio.group>
+                        <flux:menu.item :href="route('dashboard')" icon="home" wire:navigate>{{ __('Dashboard') }}</flux:menu.item>
+                        <flux:menu.item :href="route('vehicles.index')" icon="truck" wire:navigate>{{ __('Browse Vehicles') }}</flux:menu.item>
+                        <flux:menu.item :href="route('dashboard')" icon="calendar-days" wire:navigate>{{ __('My Bookings') }}</flux:menu.item>
+                        
+                        @if(auth()->user()->isAdmin())
+                            <flux:menu.item href="/admin" target="_blank" icon="cog-6-tooth">{{ __('Admin Panel') }}</flux:menu.item>
+                        @endif
+                        
+                        @if(auth()->user()->email === 'aliuwahab@gmail.com')
+                            <flux:menu.item :href="route('logs')" icon="document-text" wire:navigate>{{ __('View Logs') }}</flux:menu.item>
+                        @endif
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
