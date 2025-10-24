@@ -34,8 +34,13 @@ class DownloadVehicleImages extends Command
         
         // Create storage directory if it doesn't exist
         $storagePath = 'vehicle-images';
-        if (!$storage->exists($storagePath)) {
-            $storage->makeDirectory($storagePath);
+        try {
+            if (!$storage->exists($storagePath)) {
+                $storage->makeDirectory($storagePath);
+            }
+        } catch (\Exception $e) {
+            // Directory might already exist or creation might not be needed for S3
+            $this->info("Directory creation skipped: " . $e->getMessage());
         }
         
         // Sample vehicle images from reliable sources
