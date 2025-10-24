@@ -6,6 +6,7 @@ use App\Filament\Resources\VehicleResource\Pages;
 use App\Filament\Resources\VehicleResource\RelationManagers;
 use App\Models\Vehicle;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -120,6 +121,30 @@ class VehicleResource extends Resource
                             ->label('Available for Rental')
                             ->helperText('Toggle to make this vehicle available for rental on the website.'),
                     ])->columns(1),
+                
+                Forms\Components\Section::make('Initial Rate')
+                    ->schema([
+                        Forms\Components\TextInput::make('daily_rate')
+                            ->label('Daily Rate')
+                            ->required()
+                            ->numeric()
+                            ->prefix('$')
+                            ->minValue(0)
+                            ->step(0.01)
+                            ->helperText('Enter the daily rental rate for this vehicle'),
+                        
+                        Forms\Components\DatePicker::make('effective_from')
+                            ->label('Effective From')
+                            ->required()
+                            ->default(now())
+                            ->helperText('When this rate becomes effective'),
+                        
+                        Forms\Components\Toggle::make('is_current')
+                            ->label('Current Rate')
+                            ->default(true)
+                            ->helperText('This will be the active rate for this vehicle'),
+                    ])->columns(3)
+                    ->visible(fn (string $operation): bool => $operation === 'create'),
             ]);
     }
 

@@ -81,7 +81,9 @@ class ViewVehicle extends ViewRecord
                     ->schema([
                         Infolists\Components\TextEntry::make('currentRate.daily_rate')
                             ->money('USD')
-                            ->label('Daily Rate'),
+                            ->label('Current Daily Rate')
+                            ->weight('bold')
+                            ->color('success'),
                         
                         Infolists\Components\IconEntry::make('is_active')
                             ->boolean()
@@ -90,7 +92,65 @@ class ViewVehicle extends ViewRecord
                             ->falseIcon('heroicon-o-x-circle')
                             ->trueColor('success')
                             ->falseColor('danger'),
+                        
+                        Infolists\Components\Actions::make([
+                            Infolists\Components\Actions\Action::make('edit_current_rate')
+                                ->label('Edit Current Rate')
+                                ->icon('heroicon-o-pencil')
+                                ->color('info')
+                                ->url(fn ($record) => $record->currentRate ? route('filament.admin.resources.vehicle-rates.edit', $record->currentRate) : '#')
+                                ->openUrlInNewTab()
+                                ->visible(fn ($record) => $record->currentRate !== null),
+                        ])
+                        ->columnSpanFull()
+                        ->alignCenter(),
                     ])->columns(2),
+                
+                Infolists\Components\Section::make('Rate History')
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('vehicleRates')
+                            ->label('All Rates for This Vehicle')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('daily_rate')
+                                    ->money('USD')
+                                    ->label('Daily Rate')
+                                    ->weight(fn ($record) => $record->is_current ? 'bold' : 'normal')
+                                    ->color(fn ($record) => $record->is_current ? 'success' : 'gray'),
+                                
+                                Infolists\Components\TextEntry::make('effective_from')
+                                    ->label('Effective From')
+                                    ->dateTime()
+                                    ->weight(fn ($record) => $record->is_current ? 'bold' : 'normal'),
+                                
+                                Infolists\Components\TextEntry::make('effective_to')
+                                    ->label('Effective To')
+                                    ->dateTime()
+                                    ->placeholder('Currently Active')
+                                    ->weight(fn ($record) => $record->is_current ? 'bold' : 'normal'),
+                                
+                                Infolists\Components\TextEntry::make('is_current')
+                                    ->label('Status')
+                                    ->formatStateUsing(fn ($state) => $state ? 'CURRENT RATE' : 'Historical')
+                                    ->color(fn ($state) => $state ? 'success' : 'gray')
+                                    ->weight(fn ($record) => $record->is_current ? 'bold' : 'normal'),
+                                
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label('Created')
+                                    ->dateTime()
+                                    ->weight(fn ($record) => $record->is_current ? 'bold' : 'normal'),
+                                
+                                Infolists\Components\Actions::make([
+                                    Infolists\Components\Actions\Action::make('edit_rate')
+                                        ->label('Edit Rate')
+                                        ->icon('heroicon-o-pencil')
+                                        ->color('info')
+                                        ->url(fn ($record) => route('filament.admin.resources.vehicle-rates.edit', $record))
+                                        ->openUrlInNewTab(),
+                                ]),
+                            ])
+                            ->columns(6),
+                    ])
+                    ->collapsible(),
             ]);
     }
 }

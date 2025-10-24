@@ -6,6 +6,7 @@ use App\Filament\Resources\VehicleRateResource\Pages;
 use App\Filament\Resources\VehicleRateResource\RelationManagers;
 use App\Models\VehicleRate;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -35,6 +36,8 @@ class VehicleRateResource extends Resource
                             ->preload()
                             ->required()
                             ->live()
+                            ->disabled(fn (string $operation): bool => $operation === 'edit')
+                            ->dehydrated(fn (string $operation): bool => $operation !== 'edit')
                             ->afterStateUpdated(function (Forms\Set $set, $state) {
                                 if ($state) {
                                     // Set effective_from to now when vehicle is selected
@@ -59,7 +62,31 @@ class VehicleRateResource extends Resource
                             ->required()
                             ->default(true)
                             ->label('Current Rate')
-                            ->helperText('Only one rate can be current per vehicle'),
+                            ->live()
+                            ->helperText('Only one rate can be current per vehicle')
+                            ->afterStateUpdated(function (Forms\Set $set, $state, Forms\Get $get) {
+                                if ($state && $get('vehicle_id')) {
+                                    // Check if there are other current rates for this vehicle
+                                    $existingCurrentRates = \App\Models\VehicleRate::where('vehicle_id', $get('vehicle_id'))
+                                        ->where('is_current', true)
+                                        ->count();
+                                    
+                                    if ($existingCurrentRates > 0) {
+                                        $set('show_warning', true);
+                                    } else {
+                                        $set('show_warning', false);
+                                    }
+                                }
+                            }),
+                        
+                        Forms\Components\Placeholder::make('warning_message')
+                            ->content(function (Forms\Get $get): string {
+                                if ($get('show_warning') && $get('is_current')) {
+                                    return '⚠️ WARNING: Setting this rate as current will automatically deactivate other current rates for this vehicle.';
+                                }
+                                return '';
+                            })
+                            ->visible(fn (Forms\Get $get): bool => $get('show_warning') && $get('is_current')),
                     ])->columns(2),
             ]);
     }
@@ -119,12 +146,10 @@ class VehicleRateResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // No delete action - rates should be edited or new ones created
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // No bulk delete - rates should be edited or new ones created
             ])
             ->defaultSort('effective_from', 'desc');
     }

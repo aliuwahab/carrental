@@ -22,7 +22,6 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -299,7 +298,6 @@ class BookingResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
                 
                 Tables\Actions\Action::make('confirm_booking')
                     ->label('Confirm Booking')
@@ -406,7 +404,8 @@ class BookingResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn ($records) => $records && $records->every(fn ($record) => in_array($record->status, ['draft', 'cancelled']))),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
@@ -423,9 +422,7 @@ class BookingResource extends Resource
     {
         return [
             'index' => Pages\ListBookings::route('/'),
-            'create' => Pages\CreateBooking::route('/create'),
             'view' => Pages\ViewBooking::route('/{record}'),
-            'edit' => Pages\EditBooking::route('/{record}/edit'),
         ];
     }
 }
