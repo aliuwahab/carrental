@@ -168,6 +168,7 @@ class BookingAction
     {
         $query = Vehicle::active()
             ->available($data->start_date->format('Y-m-d'), $data->end_date->format('Y-m-d'))
+            ->whereHas('currentRate') // Only include vehicles with a current rate
             ->with('currentRate');
 
         if ($data->type) {

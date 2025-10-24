@@ -26,6 +26,7 @@ class HomePage extends Component
         
         // Load featured vehicles (active vehicles with current rates)
         $this->featuredVehicles = Vehicle::active()
+            ->whereHas('currentRate') // Only include vehicles with a current rate
             ->with('currentRate')
             ->take(6)
             ->get();
