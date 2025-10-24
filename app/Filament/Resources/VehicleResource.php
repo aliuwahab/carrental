@@ -152,8 +152,11 @@ class VehicleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('main_image')
-                    ->collection('main_image')
+                Tables\Columns\ImageColumn::make('main_image')
+                    ->label('Image')
+                    ->getStateUsing(function ($record) {
+                        return $record->getMainImageUrl();
+                    })
                     ->square()
                     ->size(60),
                 

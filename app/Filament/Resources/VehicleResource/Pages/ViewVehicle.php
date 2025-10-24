@@ -64,14 +64,19 @@ class ViewVehicle extends ViewRecord
                 
                 Infolists\Components\Section::make('Media')
                     ->schema([
-                        Infolists\Components\SpatieMediaLibraryImageEntry::make('main_image')
-                            ->collection('main_image')
+                        Infolists\Components\ImageEntry::make('main_image')
                             ->label('Main Image')
+                            ->getStateUsing(function ($record) {
+                                return $record->getMainImageUrl();
+                            })
                             ->size(300),
                         
-                        Infolists\Components\SpatieMediaLibraryImageEntry::make('gallery')
-                            ->collection('gallery')
+                        Infolists\Components\ImageEntry::make('gallery')
                             ->label('Gallery Images')
+                            ->getStateUsing(function ($record) {
+                                $galleryUrls = $record->getGalleryUrls();
+                                return $galleryUrls->take(8)->toArray();
+                            })
                             ->size(150)
                             ->limit(8)
                             ->limitedRemainingText(),
