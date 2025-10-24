@@ -31,6 +31,26 @@ class TestMediaUrls extends Command
                 $this->info('✅ Signed URLs are working!');
             } else {
                 $this->error('❌ Signed URLs are NOT working - URL is not signed');
+                
+                // Debug: Check the media record
+                $media = $vehicle->getFirstMedia('main_image');
+                if ($media) {
+                    $this->info("Media disk: " . $media->disk);
+                    $this->info("Direct URL: " . $media->getUrl());
+                    
+                    try {
+                        $signedUrl = $media->getTemporaryUrl(now()->addHours(24));
+                        $this->info("Signed URL: " . substr($signedUrl, 0, 100) . '...');
+                        
+                        if (str_contains($signedUrl, 'X-Amz-')) {
+                            $this->info('✅ Direct signed URL generation works!');
+                        } else {
+                            $this->error('❌ Direct signed URL generation failed');
+                        }
+                    } catch (\Exception $e) {
+                        $this->error('❌ Error generating signed URL: ' . $e->getMessage());
+                    }
+                }
             }
         } else {
             $this->error('❌ No main image found');
