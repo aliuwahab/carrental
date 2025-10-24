@@ -118,39 +118,95 @@ class VehicleSeeder extends Seeder
 
     private function addVehicleImages(Vehicle $vehicle, string $type): void
     {
-        // Define image URLs based on vehicle type
-        $imageUrls = $this->getImageUrlsForType($type);
+        // Use local images from storage
+        $localImages = $this->getLocalImagesForType($type);
         
-        foreach ($imageUrls as $index => $imageUrl) {
+        foreach ($localImages as $index => $imagePath) {
             try {
-                // Download image from URL
-                $imageContent = file_get_contents($imageUrl);
-                if ($imageContent === false) {
-                    continue;
-                }
-
-                // Create temporary file
-                $tempFile = tempnam(sys_get_temp_dir(), 'vehicle_image_');
-                file_put_contents($tempFile, $imageContent);
-
-                // Add to media library
+                // Add to media library from local storage
                 if ($index === 0) {
                     // First image is main image
-                    $vehicle->addMediaFromUrl($imageUrl)
+                    $vehicle->addMediaFromDisk($imagePath, 'local')
                         ->toMediaCollection('main_image');
                 } else {
                     // Additional images go to gallery
-                    $vehicle->addMediaFromUrl($imageUrl)
+                    $vehicle->addMediaFromDisk($imagePath, 'local')
                         ->toMediaCollection('gallery');
                 }
-
-                // Clean up temp file
-                unlink($tempFile);
             } catch (\Exception $e) {
-                // Continue if image download fails
-                continue;
+                // If local image fails, create a placeholder
+                $this->createPlaceholderImage($vehicle, $index === 0 ? 'main_image' : 'gallery', $type);
             }
         }
+    }
+
+    private function createPlaceholderImage(Vehicle $vehicle, string $collection, string $type): void
+    {
+        try {
+            // Create a simple placeholder image using GD
+            $width = 800;
+            $height = 600;
+            $image = imagecreate($width, $height);
+            
+            // Set colors
+            $bgColor = imagecolorallocate($image, 200, 200, 200);
+            $textColor = imagecolorallocate($image, 100, 100, 100);
+            
+            // Fill background
+            imagefill($image, 0, 0, $bgColor);
+            
+            // Add text
+            $text = strtoupper($type) . ' VEHICLE';
+            $fontSize = 5;
+            $textWidth = imagefontwidth($fontSize) * strlen($text);
+            $textHeight = imagefontheight($fontSize);
+            $x = ($width - $textWidth) / 2;
+            $y = ($height - $textHeight) / 2;
+            
+            imagestring($image, $fontSize, $x, $y, $text, $textColor);
+            
+            // Save to temporary file
+            $tempFile = tempnam(sys_get_temp_dir(), 'placeholder_') . '.jpg';
+            imagejpeg($image, $tempFile, 80);
+            imagedestroy($image);
+            
+            // Add to media library
+            $vehicle->addMedia($tempFile)
+                ->toMediaCollection($collection);
+                
+            // Clean up
+            unlink($tempFile);
+        } catch (\Exception $e) {
+            // If even placeholder creation fails, just continue
+        }
+    }
+
+    private function getLocalImagesForType(string $type): array
+    {
+        $localImages = [
+            'sedan' => [
+                'vehicle-images/sedan-1.jpg',
+                'vehicle-images/sedan-2.jpg',
+            ],
+            'economy' => [
+                'vehicle-images/economy-1.jpg',
+                'vehicle-images/sedan-1.jpg',
+            ],
+            'suv' => [
+                'vehicle-images/suv-1.jpg',
+                'vehicle-images/sedan-2.jpg',
+            ],
+            'luxury' => [
+                'vehicle-images/luxury-1.jpg',
+                'vehicle-images/sedan-1.jpg',
+            ],
+            'van' => [
+                'vehicle-images/suv-1.jpg',
+                'vehicle-images/economy-1.jpg',
+            ],
+        ];
+
+        return $localImages[$type] ?? $localImages['sedan'];
     }
 
     private function getImageUrlsForType(string $type): array
