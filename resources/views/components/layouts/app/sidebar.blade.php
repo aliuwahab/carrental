@@ -12,21 +12,18 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
+                <flux:navlist.group :heading="__('QuickRental')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="truck" :href="route('vehicles.index')" wire:navigate>{{ __('Browse Vehicles') }}</flux:navlist.item>
+                    <flux:navlist.item icon="calendar-days" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('My Bookings') }}</flux:navlist.item>
+                    
+                    @if(auth()->user()->isAdmin())
+                        <flux:navlist.item icon="cog-6-tooth" href="/admin" target="_blank">{{ __('Admin Panel') }}</flux:navlist.item>
+                    @endif
+                    
+                    <!-- Debug: Show user role -->
+                    <flux:navlist.item icon="user" href="#" disabled>{{ __('Role: ') . auth()->user()->role }}</flux:navlist.item>
                 </flux:navlist.group>
-            </flux:navlist>
-
-            <flux:spacer />
-
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
             </flux:navlist>
 
             <!-- Desktop User Menu -->

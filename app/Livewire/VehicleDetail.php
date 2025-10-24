@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Vehicle;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class VehicleDetail extends Component
@@ -13,6 +14,7 @@ class VehicleDetail extends Component
     public $isAvailable = true;
     public $totalPrice = 0;
     public $rentalDays = 0;
+    public $selectedImageIndex = 0;
 
     public function mount(Vehicle $vehicle)
     {
@@ -23,9 +25,47 @@ class VehicleDetail extends Component
         $this->checkAvailability();
     }
 
+    public function selectImage($index)
+    {
+        $this->selectedImageIndex = $index;
+    }
+
+    public function getGalleryImages()
+    {
+        return $this->vehicle->getMedia('gallery');
+    }
+
+    public function getMainImage()
+    {
+        $mainImage = $this->vehicle->getFirstMedia('main_image');
+        if ($mainImage) {
+            return $mainImage;
+        }
+        
+        // Fallback to first gallery image if no main image
+        $galleryImages = $this->getGalleryImages();
+        return $galleryImages->first();
+    }
+
     public function updatedStartDate()
     {
         $this->checkAvailability();
+    }
+
+    public function adjustEndDate()
+    {
+        // If we have both dates, maintain the rental duration
+        if ($this->startDate && $this->endDate) {
+            $oldStart = Carbon::parse($this->startDate);
+            $oldEnd = Carbon::parse($this->endDate);
+            $rentalDays = $oldStart->diffInDays($oldEnd) + 1;
+            
+            // Set new end date maintaining the same rental duration
+            $newStart = Carbon::parse($this->startDate);
+            $this->endDate = $newStart->addDays($rentalDays - 1)->format('Y-m-d');
+            
+            $this->checkAvailability();
+        }
     }
 
     public function updatedEndDate()

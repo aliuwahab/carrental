@@ -110,6 +110,79 @@ class VehicleSeeder extends Seeder
                 'is_current' => true,
                 'effective_from' => now(),
             ]);
+
+            // Add real images from Unsplash
+            $this->addVehicleImages($vehicle, $vehicleData['type']);
         }
+    }
+
+    private function addVehicleImages(Vehicle $vehicle, string $type): void
+    {
+        // Define image URLs based on vehicle type
+        $imageUrls = $this->getImageUrlsForType($type);
+        
+        foreach ($imageUrls as $index => $imageUrl) {
+            try {
+                // Download image from URL
+                $imageContent = file_get_contents($imageUrl);
+                if ($imageContent === false) {
+                    continue;
+                }
+
+                // Create temporary file
+                $tempFile = tempnam(sys_get_temp_dir(), 'vehicle_image_');
+                file_put_contents($tempFile, $imageContent);
+
+                // Add to media library
+                if ($index === 0) {
+                    // First image is main image
+                    $vehicle->addMediaFromUrl($imageUrl)
+                        ->toMediaCollection('main_image');
+                } else {
+                    // Additional images go to gallery
+                    $vehicle->addMediaFromUrl($imageUrl)
+                        ->toMediaCollection('gallery');
+                }
+
+                // Clean up temp file
+                unlink($tempFile);
+            } catch (\Exception $e) {
+                // Continue if image download fails
+                continue;
+            }
+        }
+    }
+
+    private function getImageUrlsForType(string $type): array
+    {
+        $imageUrls = [
+            'sedan' => [
+                'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1549317336-206569e8475c?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=600&fit=crop',
+            ],
+            'economy' => [
+                'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1549317336-206569e8475c?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=600&fit=crop',
+            ],
+            'suv' => [
+                'https://images.unsplash.com/photo-1549317336-206569e8475c?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop',
+            ],
+            'luxury' => [
+                'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1549317336-206569e8475c?w=800&h=600&fit=crop',
+            ],
+            'van' => [
+                'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&h=600&fit=crop',
+                'https://images.unsplash.com/photo-1549317336-206569e8475c?w=800&h=600&fit=crop',
+            ],
+        ];
+
+        return $imageUrls[$type] ?? $imageUrls['sedan'];
     }
 }

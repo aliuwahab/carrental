@@ -50,6 +50,22 @@ class VehicleListing extends Component
         }
     }
 
+    public function adjustEndDate()
+    {
+        // If we have both dates, maintain the rental duration
+        if ($this->startDate && $this->endDate) {
+            $oldStart = \Carbon\Carbon::parse($this->startDate);
+            $oldEnd = \Carbon\Carbon::parse($this->endDate);
+            $rentalDays = $oldStart->diffInDays($oldEnd) + 1;
+            
+            // Set new end date maintaining the same rental duration
+            $newStart = \Carbon\Carbon::parse($this->startDate);
+            $this->endDate = $newStart->addDays($rentalDays - 1)->format('Y-m-d');
+            
+            $this->searchVehicles();
+        }
+    }
+
     public function render()
     {
         $filterData = VehicleFilterData::from([
@@ -81,15 +97,28 @@ class VehicleListing extends Component
             $vehicles = $vehicles->reverse();
         }
 
-        // Paginate manually since we're working with a collection
+        // Convert to paginated collection
         $perPage = 12;
         $currentPage = $this->getPage();
+        $total = $vehicles->count();
         $offset = ($currentPage - 1) * $perPage;
-        $paginatedVehicles = $vehicles->slice($offset, $perPage);
+        $items = $vehicles->slice($offset, $perPage)->values();
+        
+        // Create a paginator instance
+        $paginatedVehicles = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $total,
+            $perPage,
+            $currentPage,
+            [
+                'path' => request()->url(),
+                'pageName' => 'page',
+            ]
+        );
 
         return view('livewire.vehicle-listing', [
             'vehicles' => $paginatedVehicles,
-            'totalVehicles' => $vehicles->count(),
+            'totalVehicles' => $total,
         ])
         ->layout('components.layouts.public');
     }

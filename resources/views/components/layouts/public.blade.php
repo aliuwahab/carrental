@@ -33,7 +33,7 @@
                     <a href="{{ route('vehicles.index') }}" class="text-gray-700 hover:text-blue-600 transition-colors">Vehicles</a>
                     
                     @auth
-                        <a href="{{ route('bookings.index') }}" class="text-gray-700 hover:text-blue-600 transition-colors">My Bookings</a>
+                        <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600 transition-colors">My Bookings</a>
                         <div class="flex items-center space-x-4">
                             <span class="text-sm text-gray-600">Welcome, {{ auth()->user()->name }}</span>
                             <form method="POST" action="{{ route('logout') }}" class="inline">
