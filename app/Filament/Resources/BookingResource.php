@@ -5,10 +5,27 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
 use App\Models\Booking;
+use App\Models\PaymentDetail;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -36,78 +53,44 @@ class BookingResource extends Resource
                             ->default(fn () => 'BK' . strtoupper(uniqid())),
                         
                         Forms\Components\Select::make('user_id')
+                            ->label('Customer')
                             ->relationship('user', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('email')
-                                    ->email()
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('phone')
-                                    ->tel()
-                                    ->maxLength(255),
-                            ])
-                            ->createOptionUsing(function (array $data): int {
-                                return \App\Models\User::create($data)->getKey();
-                            }),
+                            ->disabled()
+                            ->dehydrated(false),
                         
                         Forms\Components\Select::make('vehicle_id')
+                            ->label('Vehicle')
                             ->relationship('vehicle', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required(),
+                            ->disabled()
+                            ->dehydrated(false),
                     ])->columns(2),
                 
                 Section::make('Rental Details')
                     ->schema([
                         Forms\Components\DatePicker::make('start_date')
-                            ->required()
-                            ->live()
-                            ->afterStateUpdated(function (Forms\Set $set, $state, Forms\Get $get) {
-                                $endDate = $get('end_date');
-                                if ($state && $endDate) {
-                                    $start = \Carbon\Carbon::parse($state);
-                                    $end = \Carbon\Carbon::parse($endDate);
-                                    $days = $start->diffInDays($end) + 1;
-                                    $set('rental_days', $days);
-                                }
-                            }),
+                            ->label('Start Date')
+                            ->disabled()
+                            ->dehydrated(false),
                         
                         Forms\Components\DatePicker::make('end_date')
-                            ->required()
-                            ->live()
-                            ->afterStateUpdated(function (Forms\Set $set, $state, Forms\Get $get) {
-                                $startDate = $get('start_date');
-                                if ($state && $startDate) {
-                                    $start = \Carbon\Carbon::parse($startDate);
-                                    $end = \Carbon\Carbon::parse($state);
-                                    $days = $start->diffInDays($end) + 1;
-                                    $set('rental_days', $days);
-                                }
-                            }),
+                            ->label('End Date')
+                            ->disabled()
+                            ->dehydrated(false),
                         
                         Forms\Components\TextInput::make('rental_days')
-                            ->numeric()
+                            ->label('Rental Days')
                             ->disabled()
-                            ->dehydrated()
-                            ->label('Rental Days'),
+                            ->dehydrated(false),
                         
                         Forms\Components\TextInput::make('daily_rate')
-                            ->numeric()
-                            ->prefix('$')
-                            ->required()
-                            ->label('Daily Rate'),
+                            ->label('Daily Rate')
+                            ->disabled()
+                            ->dehydrated(false),
                         
                         Forms\Components\TextInput::make('total_amount')
-                            ->numeric()
-                            ->prefix('$')
-                            ->required()
-                            ->label('Total Amount'),
+                            ->label('Total Amount')
+                            ->disabled()
+                            ->dehydrated(false),
                     ])->columns(2),
                 
                 Section::make('Payment & Status')
@@ -147,16 +130,24 @@ class BookingResource extends Resource
                 Section::make('Timestamps')
                     ->schema([
                         Forms\Components\DateTimePicker::make('confirmed_at')
-                            ->label('Confirmed At'),
+                            ->label('Confirmed At')
+                            ->disabled()
+                            ->dehydrated(false),
                         
                         Forms\Components\DateTimePicker::make('completed_at')
-                            ->label('Completed At'),
+                            ->label('Completed At')
+                            ->disabled()
+                            ->dehydrated(false),
                         
                         Forms\Components\DateTimePicker::make('cancelled_at')
-                            ->label('Cancelled At'),
+                            ->label('Cancelled At')
+                            ->disabled()
+                            ->dehydrated(false),
                         
                         Forms\Components\DateTimePicker::make('expires_at')
-                            ->label('Expires At'),
+                            ->label('Expires At')
+                            ->disabled()
+                            ->dehydrated(false),
                     ])->columns(2)
                     ->collapsible(),
                 
@@ -230,6 +221,28 @@ class BookingResource extends Resource
                     ->color('info')
                     ->label('Payment'),
                 
+                Tables\Columns\TextColumn::make('paymentDetail.amount')
+                    ->money('USD')
+                    ->label('Paid Amount')
+                    ->sortable(),
+                
+                Tables\Columns\IconColumn::make('paymentDetail.verified_at')
+                    ->boolean()
+                    ->label('Payment Verified')
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
+                
+                Tables\Columns\IconColumn::make('paymentDetail.payment_info.receipt_path')
+                    ->boolean()
+                    ->label('Receipt')
+                    ->trueIcon('heroicon-o-document')
+                    ->falseIcon('heroicon-o-document-text')
+                    ->trueColor('success')
+                    ->falseColor('gray')
+                    ->getStateUsing(fn ($record) => !empty($record->paymentDetail?->payment_info['receipt_path'] ?? null)),
+                
                 Tables\Columns\IconColumn::make('terms_accepted')
                     ->boolean()
                     ->label('Terms')
@@ -287,6 +300,108 @@ class BookingResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                
+                Tables\Actions\Action::make('confirm_booking')
+                    ->label('Confirm Booking')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn (Booking $record): bool => $record->status === 'pending')
+                    ->form([
+                        Forms\Components\Section::make('Payment Details')
+                            ->schema([
+                                Forms\Components\TextInput::make('payment_reference')
+                                    ->label('Payment Reference')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->helperText('Enter the payment reference provided by the customer'),
+                                
+                                Forms\Components\Select::make('payment_method')
+                                    ->label('Payment Method')
+                                    ->options([
+                                        'paypal' => 'PayPal',
+                                        'mobile_money' => 'Mobile Money',
+                                        'bank_transfer' => 'Bank Transfer',
+                                        'cash' => 'Cash',
+                                    ])
+                                    ->required(),
+                                
+                                Forms\Components\TextInput::make('payment_amount')
+                                    ->label('Payment Amount')
+                                    ->numeric()
+                                    ->prefix('$')
+                                    ->required()
+                                    ->default(fn (Booking $record): float => $record->total_amount),
+                                
+                                Forms\Components\Textarea::make('payment_notes')
+                                    ->label('Payment Notes')
+                                    ->rows(3)
+                                    ->helperText('Any additional notes about the payment'),
+                                
+                                Forms\Components\FileUpload::make('payment_receipt')
+                                    ->label('Payment Receipt')
+                                    ->acceptedFileTypes(['application/pdf', 'image/*'])
+                                    ->maxSize(10240) // 10MB
+                                    ->directory('payment-receipts')
+                                    ->visibility('private')
+                                    ->helperText('Upload a photo or PDF of the payment receipt')
+                                    ->columnSpanFull(),
+                            ])->columns(2),
+                    ])
+                    ->action(function (Booking $record, array $data): void {
+                        // Create payment detail
+                        $paymentDetail = $record->paymentDetail()->create([
+                            'payment_method' => $data['payment_method'],
+                            'amount' => $data['payment_amount'],
+                            'transaction_id' => $data['payment_reference'],
+                            'payment_info' => [
+                                'notes' => $data['payment_notes'] ?? null,
+                                'reference' => $data['payment_reference'],
+                                'receipt_path' => $data['payment_receipt'] ?? null,
+                            ],
+                            'paid_at' => now(),
+                            'verified_at' => now(),
+                        ]);
+                        
+                        // Update booking status
+                        $record->update([
+                            'status' => 'confirmed',
+                            'confirmed_at' => now(),
+                        ]);
+                        
+                        // Send notification to user
+                        $record->user->notify(new \App\Notifications\BookingConfirmed($record));
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Booking Payment')
+                    ->modalDescription('Please enter the payment details to confirm this booking.')
+                    ->modalSubmitActionLabel('Confirm Booking'),
+                
+                Tables\Actions\Action::make('view_receipt')
+                    ->label('View Receipt')
+                    ->icon('heroicon-o-document')
+                    ->color('info')
+                    ->visible(fn (Booking $record): bool => 
+                        $record->paymentDetail && 
+                        !empty($record->paymentDetail->payment_info['receipt_path'] ?? null)
+                    )
+                    ->url(fn (Booking $record): string => 
+                        \Storage::url($record->paymentDetail->payment_info['receipt_path'])
+                    )
+                    ->openUrlInNewTab(),
+                
+                Tables\Actions\Action::make('cancel_booking')
+                    ->label('Cancel Booking')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(fn (Booking $record): bool => in_array($record->status, ['pending', 'draft']))
+                    ->requiresConfirmation()
+                    ->action(function (Booking $record): void {
+                        $record->update([
+                            'status' => 'cancelled',
+                            'cancelled_at' => now(),
+                        ]);
+                    }),
+                
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -309,6 +424,7 @@ class BookingResource extends Resource
         return [
             'index' => Pages\ListBookings::route('/'),
             'create' => Pages\CreateBooking::route('/create'),
+            'view' => Pages\ViewBooking::route('/{record}'),
             'edit' => Pages\EditBooking::route('/{record}/edit'),
         ];
     }
