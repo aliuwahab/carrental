@@ -16,8 +16,8 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
             <!-- Vehicle Images -->
             <div class="space-y-6">
                 @php
@@ -34,15 +34,15 @@
                 
                 <!-- Main Image -->
                 <div class="relative group">
-                    <div class="aspect-w-16 aspect-h-9 overflow-hidden rounded-2xl shadow-2xl">
+                    <div class="aspect-w-16 aspect-h-9 overflow-hidden rounded-xl lg:rounded-2xl shadow-xl lg:shadow-2xl">
                         @if($allImageUrls->count() > 0)
                             <img src="{{ $allImageUrls[$selectedImageIndex] }}" 
                                  alt="{{ $vehicle->name }}" 
-                                 class="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-500">
+                                 class="w-full h-64 sm:h-80 lg:h-96 object-cover group-hover:scale-105 transition-transform duration-500">
                         @else
                             <img src="https://via.placeholder.com/800x450?text=Vehicle+Image" 
                                  alt="{{ $vehicle->name }}" 
-                                 class="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-500">
+                                 class="w-full h-64 sm:h-80 lg:h-96 object-cover group-hover:scale-105 transition-transform duration-500">
                         @endif
                     </div>
                     <div class="absolute top-4 right-4">
@@ -78,13 +78,13 @@
                 
                 <!-- Image Gallery Thumbnails -->
                 @if($allImageUrls->count() > 1)
-                    <div class="grid grid-cols-4 gap-3">
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-3">
                         @foreach($allImageUrls as $index => $imageUrl)
                             <button wire:click="selectImage({{ $index }})" 
                                     class="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 {{ $selectedImageIndex === $index ? 'ring-2 ring-blue-500 shadow-xl' : '' }}">
                                 <img src="{{ $imageUrl }}" 
                                      alt="{{ $vehicle->name }}" 
-                                     class="w-full h-20 object-cover hover:scale-105 transition-transform duration-300">
+                                     class="w-full h-16 sm:h-20 object-cover hover:scale-105 transition-transform duration-300">
                             </button>
                         @endforeach
                     </div>
@@ -92,20 +92,20 @@
                 
                 <!-- Features Grid -->
                 @if($vehicle->features)
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                            <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="bg-white rounded-xl lg:rounded-2xl shadow-lg border border-gray-100 p-4 lg:p-6">
+                        <h3 class="text-lg lg:text-xl font-bold text-gray-900 mb-4 lg:mb-6 flex items-center">
+                            <svg class="w-5 h-5 lg:w-6 lg:h-6 text-blue-600 mr-2 lg:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                             Vehicle Features
                         </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
                             @foreach($vehicle->features as $feature)
-                                <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                                    <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <div class="flex items-center space-x-2 lg:space-x-3 p-2 lg:p-3 bg-blue-50 rounded-lg">
+                                    <svg class="w-4 h-4 lg:w-5 lg:h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                                     </svg>
-                                    <span class="text-sm font-medium text-gray-700">{{ $feature }}</span>
+                                    <span class="text-xs lg:text-sm font-medium text-gray-700">{{ $feature }}</span>
                                 </div>
                             @endforeach
                         </div>
@@ -114,20 +114,20 @@
             </div>
 
             <!-- Vehicle Details & Booking -->
-            <div class="space-y-6">
+            <div class="space-y-4 lg:space-y-6">
                 <!-- Vehicle Info -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                    <div class="mb-6">
-                        <h1 class="text-4xl font-bold text-gray-900 mb-3">{{ $vehicle->name }}</h1>
-                        <div class="flex items-center space-x-4 text-lg text-gray-600 mb-4">
+                <div class="bg-white rounded-xl lg:rounded-2xl shadow-lg border border-gray-100 p-4 lg:p-8">
+                    <div class="mb-4 lg:mb-6">
+                        <h1 class="text-2xl lg:text-4xl font-bold text-gray-900 mb-3">{{ $vehicle->name }}</h1>
+                        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 text-base lg:text-lg text-gray-600 mb-4">
                             <span class="flex items-center">
-                                <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 lg:w-5 lg:h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                 </svg>
                                 {{ ucfirst($vehicle->type) }}
                             </span>
                             <span class="flex items-center">
-                                <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 lg:w-5 lg:h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                 </svg>
                                 {{ $vehicle->seats }} seats
@@ -135,56 +135,56 @@
                         </div>
                         
                         @if($vehicle->description)
-                            <p class="text-gray-700 text-lg leading-relaxed">{{ $vehicle->description }}</p>
+                            <p class="text-gray-700 text-base lg:text-lg leading-relaxed">{{ $vehicle->description }}</p>
                         @endif
                     </div>
 
                     <!-- Vehicle Specifications -->
-                    <div class="bg-gray-50 rounded-xl p-6 mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Specifications</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="flex items-center justify-between py-3 border-b border-gray-200">
-                                <span class="font-medium text-gray-700">Transmission:</span>
-                                <span class="text-gray-900 font-semibold">{{ ucfirst($vehicle->transmission) }}</span>
+                    <div class="bg-gray-50 rounded-lg lg:rounded-xl p-4 lg:p-6 mb-4 lg:mb-6">
+                        <h3 class="text-base lg:text-lg font-semibold text-gray-900 mb-3 lg:mb-4">Specifications</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
+                            <div class="flex items-center justify-between py-2 lg:py-3 border-b border-gray-200">
+                                <span class="text-sm lg:text-base font-medium text-gray-700">Transmission:</span>
+                                <span class="text-sm lg:text-base text-gray-900 font-semibold">{{ ucfirst($vehicle->transmission) }}</span>
                             </div>
-                            <div class="flex items-center justify-between py-3 border-b border-gray-200">
-                                <span class="font-medium text-gray-700">Fuel Type:</span>
-                                <span class="text-gray-900 font-semibold">{{ $vehicle->fuel_type }}</span>
+                            <div class="flex items-center justify-between py-2 lg:py-3 border-b border-gray-200">
+                                <span class="text-sm lg:text-base font-medium text-gray-700">Fuel Type:</span>
+                                <span class="text-sm lg:text-base text-gray-900 font-semibold">{{ $vehicle->fuel_type }}</span>
                             </div>
-                            <div class="flex items-center justify-between py-3 border-b border-gray-200">
-                                <span class="font-medium text-gray-700">Seats:</span>
-                                <span class="text-gray-900 font-semibold">{{ $vehicle->seats }}</span>
+                            <div class="flex items-center justify-between py-2 lg:py-3 border-b border-gray-200">
+                                <span class="text-sm lg:text-base font-medium text-gray-700">Seats:</span>
+                                <span class="text-sm lg:text-base text-gray-900 font-semibold">{{ $vehicle->seats }}</span>
                             </div>
-                            <div class="flex items-center justify-between py-3 border-b border-gray-200">
-                                <span class="font-medium text-gray-700">Daily Rate:</span>
-                                <span class="text-blue-600 font-bold text-lg">${{ number_format($vehicle->currentRate?->daily_rate ?? 0, 2) }}</span>
+                            <div class="flex items-center justify-between py-2 lg:py-3 border-b border-gray-200">
+                                <span class="text-sm lg:text-base font-medium text-gray-700">Daily Rate:</span>
+                                <span class="text-blue-600 font-bold text-base lg:text-lg">${{ number_format($vehicle->currentRate?->daily_rate ?? 0, 2) }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Booking Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                        <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white rounded-xl lg:rounded-2xl shadow-lg border border-gray-100 p-4 lg:p-8">
+                    <h3 class="text-lg lg:text-2xl font-bold text-gray-900 mb-4 lg:mb-6 flex items-center">
+                        <svg class="w-5 h-5 lg:w-6 lg:h-6 text-blue-600 mr-2 lg:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                         Select Rental Dates
                     </h3>
                     
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 mb-4 lg:mb-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-3">Pickup Date</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2 lg:mb-3">Pickup Date</label>
                             <input type="date" wire:model.live="startDate" 
                                    min="{{ now()->format('Y-m-d') }}"
                                    wire:change="adjustEndDate"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg">
+                                   class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base lg:text-lg">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-3">Return Date</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2 lg:mb-3">Return Date</label>
                             <input type="date" wire:model.live="endDate" 
                                    min="{{ $startDate ? \Carbon\Carbon::parse($startDate)->addDay()->format('Y-m-d') : now()->addDay()->format('Y-m-d') }}"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg">
+                                   class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base lg:text-lg">
                         </div>
                     </div>
 
