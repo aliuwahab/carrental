@@ -103,7 +103,8 @@ class VehicleResource extends Resource
                                 '4:3',
                                 '1:1',
                             ])
-                            ->helperText('Upload the main vehicle image. This will be displayed as the primary image on the website.'),
+                            ->helperText('Upload the main vehicle image. This will be displayed as the primary image on the website.')
+                            ->visibleOn('create'),
                         
                         Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
                             ->collection('gallery')
@@ -113,7 +114,43 @@ class VehicleResource extends Resource
                             ->imageEditor()
                             ->reorderable()
                             ->appendFiles()
-                            ->helperText('Upload multiple images for the vehicle gallery. Users can browse through these images on the vehicle detail page.'),
+                            ->helperText('Upload multiple images for the vehicle gallery. Users can browse through these images on the vehicle detail page.')
+                            ->visibleOn('create'),
+                        
+                        Forms\Components\Placeholder::make('existing_images')
+                            ->label('Current Images')
+                            ->content(function ($record) {
+                                if (!$record) return '';
+                                
+                                return new \Illuminate\Support\HtmlString(
+                                    view('filament.vehicle-images', ['vehicle' => $record])->render()
+                                );
+                            })
+                            ->visibleOn('edit'),
+                        
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('new_main_image')
+                            ->collection('main_image')
+                            ->image()
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                '16:9',
+                                '4:3',
+                                '1:1',
+                            ])
+                            ->helperText('Upload a new main image to replace the current one.')
+                            ->visibleOn('edit'),
+                        
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('new_gallery')
+                            ->collection('gallery')
+                            ->image()
+                            ->multiple()
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->reorderable()
+                            ->appendFiles()
+                            ->helperText('Upload additional gallery images.')
+                            ->visibleOn('edit'),
                         
                         Forms\Components\Toggle::make('is_active')
                             ->required()
