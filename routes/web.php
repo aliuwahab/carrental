@@ -1,5 +1,10 @@
 <?php
 
+use App\Livewire\HomePage;
+use App\Livewire\VehicleListing;
+use App\Livewire\VehicleDetail;
+use App\Livewire\CreateBooking;
+use App\Livewire\BookingHistory;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -7,15 +12,18 @@ use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// Public routes
+Route::get('/', HomePage::class)->name('home');
+Route::get('/vehicles', VehicleListing::class)->name('vehicles.index');
+Route::get('/vehicles/{vehicle:slug}', VehicleDetail::class)->name('vehicles.show');
+Route::get('/book/{vehicle:slug}', CreateBooking::class)->name('booking.create');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/bookings', BookingHistory::class)->name('bookings.index');
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', Profile::class)->name('profile.edit');
