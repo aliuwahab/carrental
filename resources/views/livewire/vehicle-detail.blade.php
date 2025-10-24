@@ -210,21 +210,21 @@
 
                         <!-- Price Calculation -->
                         @if($isAvailable && $totalPrice > 0)
-                            <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 mb-6 border border-blue-200">
-                                <h4 class="text-lg font-semibold text-gray-900 mb-4">Price Breakdown</h4>
-                                <div class="space-y-3">
+                            <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg lg:rounded-xl p-4 lg:p-6 mb-4 lg:mb-6 border border-blue-200">
+                                <h4 class="text-base lg:text-lg font-semibold text-gray-900 mb-3 lg:mb-4">Price Breakdown</h4>
+                                <div class="space-y-2 lg:space-y-3">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-gray-700">Daily Rate:</span>
-                                        <span class="font-semibold text-gray-900">${{ number_format($vehicle->currentRate?->daily_rate ?? 0, 2) }}</span>
+                                        <span class="text-sm lg:text-base text-gray-700">Daily Rate:</span>
+                                        <span class="text-sm lg:text-base font-semibold text-gray-900">${{ number_format($vehicle->currentRate?->daily_rate ?? 0, 2) }}</span>
                                     </div>
                                     <div class="flex justify-between items-center">
-                                        <span class="text-gray-700">Rental Days:</span>
-                                        <span class="font-semibold text-gray-900">{{ $rentalDays }} days</span>
+                                        <span class="text-sm lg:text-base text-gray-700">Rental Days:</span>
+                                        <span class="text-sm lg:text-base font-semibold text-gray-900">{{ $rentalDays }} days</span>
                                     </div>
-                                    <div class="border-t border-blue-200 pt-3">
+                                    <div class="border-t border-blue-200 pt-2 lg:pt-3">
                                         <div class="flex justify-between items-center">
-                                            <span class="text-xl font-bold text-gray-900">Total Amount:</span>
-                                            <span class="text-3xl font-bold text-blue-600">${{ number_format($totalPrice, 2) }}</span>
+                                            <span class="text-lg lg:text-xl font-bold text-gray-900">Total Amount:</span>
+                                            <span class="text-2xl lg:text-3xl font-bold text-blue-600">${{ number_format($totalPrice, 2) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -234,16 +234,16 @@
 
                     <!-- Book Now Button -->
                     <button wire:click="bookNow" 
-                            class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-4 px-8 rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 font-bold text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 {{ !$isAvailable ? 'opacity-50 cursor-not-allowed' : '' }}"
+                            class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-3 lg:py-4 px-6 lg:px-8 rounded-lg lg:rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 font-bold text-lg lg:text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 {{ !$isAvailable ? 'opacity-50 cursor-not-allowed' : '' }}"
                             {{ !$isAvailable ? 'disabled' : '' }}>
                         <span class="flex items-center justify-center">
                             @if($isAvailable)
-                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 lg:w-6 lg:h-6 mr-2 lg:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
                                 Book This Vehicle
                             @else
-                                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 lg:w-6 lg:h-6 mr-2 lg:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                                 </svg>
                                 Not Available
