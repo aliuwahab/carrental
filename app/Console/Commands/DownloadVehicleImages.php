@@ -28,10 +28,14 @@ class DownloadVehicleImages extends Command
     {
         $this->info('Downloading vehicle images...');
         
+        // Use the configured filesystem disk (S3 in production)
+        $disk = config('filesystems.default', 'local');
+        $storage = Storage::disk($disk);
+        
         // Create storage directory if it doesn't exist
         $storagePath = 'vehicle-images';
-        if (!Storage::exists($storagePath)) {
-            Storage::makeDirectory($storagePath);
+        if (!$storage->exists($storagePath)) {
+            $storage->makeDirectory($storagePath);
         }
         
         // Sample vehicle images from reliable sources
@@ -60,7 +64,7 @@ class DownloadVehicleImages extends Command
                 
                 // Save to storage
                 $filePath = $storagePath . '/' . $filename;
-                Storage::put($filePath, $imageContent);
+                $storage->put($filePath, $imageContent);
                 
                 $this->info("✓ Downloaded {$filename}");
                 $downloaded++;
@@ -74,8 +78,12 @@ class DownloadVehicleImages extends Command
         $this->info("Download complete! {$downloaded} images downloaded, {$failed} failed.");
         
         if ($downloaded > 0) {
-            $this->info("Images stored in: storage/app/{$storagePath}/");
-            $this->info("Run 'php artisan storage:link' to create public symlink.");
+            $this->info("Images stored in: {$disk}://{$storagePath}/");
+            if ($disk === 'local') {
+                $this->info("Run 'php artisan storage:link' to create public symlink.");
+            } else {
+                $this->info("Images are stored in cloud storage ({$disk}).");
+            }
         }
     }
 }

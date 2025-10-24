@@ -120,21 +120,22 @@ class VehicleSeeder extends Seeder
     {
         // Use local images from storage
         $localImages = $this->getLocalImagesForType($type);
+        $disk = config('filesystems.default', 'local');
         
         foreach ($localImages as $index => $imagePath) {
             try {
-                // Add to media library from local storage
+                // Add to media library from configured storage (S3 in production)
                 if ($index === 0) {
                     // First image is main image
-                    $vehicle->addMediaFromDisk($imagePath, 'local')
+                    $vehicle->addMediaFromDisk($imagePath, $disk)
                         ->toMediaCollection('main_image');
                 } else {
                     // Additional images go to gallery
-                    $vehicle->addMediaFromDisk($imagePath, 'local')
+                    $vehicle->addMediaFromDisk($imagePath, $disk)
                         ->toMediaCollection('gallery');
                 }
             } catch (\Exception $e) {
-                // If local image fails, create a placeholder
+                // If image fails, create a placeholder
                 $this->createPlaceholderImage($vehicle, $index === 0 ? 'main_image' : 'gallery', $type);
             }
         }
@@ -170,7 +171,7 @@ class VehicleSeeder extends Seeder
             imagejpeg($image, $tempFile, 80);
             imagedestroy($image);
             
-            // Add to media library
+            // Add to media library (will use configured disk automatically)
             $vehicle->addMedia($tempFile)
                 ->toMediaCollection($collection);
                 
