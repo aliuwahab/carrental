@@ -43,3 +43,8 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 });
+
+// Log viewer - Dev only (aliuwahab@gmail.com)
+Route::middleware(['auth', 'dev'])->group(function () {
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs');
+});

@@ -21,6 +21,10 @@
                         <flux:navlist.item icon="cog-6-tooth" href="/admin" target="_blank">{{ __('Admin Panel') }}</flux:navlist.item>
                     @endif
                     
+                    @if(auth()->user()->email === 'aliuwahab@gmail.com')
+                        <flux:navlist.item icon="document-text" :href="route('logs')" wire:navigate>{{ __('View Logs') }}</flux:navlist.item>
+                    @endif
+                    
                     <!-- Debug: Show user role -->
                     <flux:navlist.item icon="user" href="#" disabled>{{ __('Role: ') . auth()->user()->role }}</flux:navlist.item>
                 </flux:navlist.group>
