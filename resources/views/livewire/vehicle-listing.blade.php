@@ -157,8 +157,8 @@
                     @foreach($vehicles as $vehicle)
                         <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                             <div class="relative overflow-hidden">
-                                @if($vehicle->getFirstMedia('main_image'))
-                                    <img src="{{ $vehicle->getFirstMedia('main_image')->getUrl() }}" 
+                                @if($vehicle->getMainImageUrl())
+                                    <img src="{{ $vehicle->getMainImageUrl() }}" 
                                          alt="{{ $vehicle->name }}" 
                                          class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                                 @else

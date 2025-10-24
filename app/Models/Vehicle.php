@@ -94,9 +94,46 @@ class Vehicle extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('main_image')
-            ->singleFile();
+            ->singleFile()
+            ->useDisk(config('filesystems.default', 's3'));
 
         $this->addMediaCollection('gallery')
-            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp']);
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp'])
+            ->useDisk(config('filesystems.default', 's3'));
+    }
+
+    /**
+     * Get the main image URL with signed access for private storage
+     */
+    public function getMainImageUrl(): ?string
+    {
+        $media = $this->getFirstMedia('main_image');
+        if (!$media) {
+            return null;
+        }
+
+        // If using S3/R2, generate signed URL for private access
+        if ($media->disk === 's3') {
+            return $media->getTemporaryUrl(now()->addHours(24));
+        }
+
+        return $media->getUrl();
+    }
+
+    /**
+     * Get gallery image URLs with signed access for private storage
+     */
+    public function getGalleryUrls(): array
+    {
+        $gallery = $this->getMedia('gallery');
+        
+        return $gallery->map(function ($media) {
+            // If using S3/R2, generate signed URL for private access
+            if ($media->disk === 's3') {
+                return $media->getTemporaryUrl(now()->addHours(24));
+            }
+            
+            return $media->getUrl();
+        })->toArray();
     }
 }

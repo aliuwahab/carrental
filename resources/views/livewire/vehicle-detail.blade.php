@@ -21,22 +21,22 @@
             <!-- Vehicle Images -->
             <div class="space-y-6">
                 @php
-                    $mainImage = $this->getMainImage();
-                    $galleryImages = $this->getGalleryImages();
-                    $allImages = collect();
+                    $mainImageUrl = $this->getMainImageUrl();
+                    $galleryUrls = $this->getGalleryUrls();
+                    $allImageUrls = collect();
                     
-                    if ($mainImage) {
-                        $allImages->push($mainImage);
+                    if ($mainImageUrl) {
+                        $allImageUrls->push($mainImageUrl);
                     }
                     
-                    $allImages = $allImages->merge($galleryImages);
+                    $allImageUrls = $allImageUrls->merge($galleryUrls);
                 @endphp
                 
                 <!-- Main Image -->
                 <div class="relative group">
                     <div class="aspect-w-16 aspect-h-9 overflow-hidden rounded-2xl shadow-2xl">
-                        @if($allImages->count() > 0)
-                            <img src="{{ $allImages[$selectedImageIndex]->getUrl() }}" 
+                        @if($allImageUrls->count() > 0)
+                            <img src="{{ $allImageUrls[$selectedImageIndex] }}" 
                                  alt="{{ $vehicle->name }}" 
                                  class="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-500">
                         @else
@@ -59,15 +59,15 @@
                         </div>
                     </div>
                     
-                    @if($allImages->count() > 1)
+                    @if($allImageUrls->count() > 1)
                         <!-- Navigation arrows -->
-                        <button wire:click="selectImage({{ $selectedImageIndex > 0 ? $selectedImageIndex - 1 : $allImages->count() - 1 }})" 
+                        <button wire:click="selectImage({{ $selectedImageIndex > 0 ? $selectedImageIndex - 1 : $allImageUrls->count() - 1 }})" 
                                 class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                             </svg>
                         </button>
-                        <button wire:click="selectImage({{ $selectedImageIndex < $allImages->count() - 1 ? $selectedImageIndex + 1 : 0 }})" 
+                        <button wire:click="selectImage({{ $selectedImageIndex < $allImageUrls->count() - 1 ? $selectedImageIndex + 1 : 0 }})" 
                                 class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -77,12 +77,12 @@
                 </div>
                 
                 <!-- Image Gallery Thumbnails -->
-                @if($allImages->count() > 1)
+                @if($allImageUrls->count() > 1)
                     <div class="grid grid-cols-4 gap-3">
-                        @foreach($allImages as $index => $image)
+                        @foreach($allImageUrls as $index => $imageUrl)
                             <button wire:click="selectImage({{ $index }})" 
                                     class="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 {{ $selectedImageIndex === $index ? 'ring-2 ring-blue-500 shadow-xl' : '' }}">
-                                <img src="{{ $image->getUrl('thumb') }}" 
+                                <img src="{{ $imageUrl }}" 
                                      alt="{{ $vehicle->name }}" 
                                      class="w-full h-20 object-cover hover:scale-105 transition-transform duration-300">
                             </button>

@@ -67,8 +67,8 @@
                                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                                     <div class="flex-1">
                                         <div class="flex items-center space-x-6 mb-6">
-                                            @if($booking->vehicle->getFirstMedia('main_image'))
-                                                <img src="{{ $booking->vehicle->getFirstMedia('main_image')->getUrl() }}" 
+                                            @if($booking->vehicle->getMainImageUrl())
+                                                <img src="{{ $booking->vehicle->getMainImageUrl() }}" 
                                                      alt="{{ $booking->vehicle->name }}" 
                                                      class="w-32 h-20 object-cover rounded-xl shadow-lg">
                                             @else

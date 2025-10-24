@@ -47,6 +47,16 @@ class VehicleDetail extends Component
         return $galleryImages->first();
     }
 
+    public function getMainImageUrl()
+    {
+        return $this->vehicle->getMainImageUrl();
+    }
+
+    public function getGalleryUrls()
+    {
+        return $this->vehicle->getGalleryUrls();
+    }
+
     public function updatedStartDate()
     {
         $this->checkAvailability();
