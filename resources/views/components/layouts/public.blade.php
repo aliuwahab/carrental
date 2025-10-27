@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'QuickRental - Car Rental Made Simple' }}</title>
+    <title>{{ $title ?? 'Rental Ghana - Car Rental Made Simple' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -26,7 +26,7 @@
                         <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                             <span class="text-white font-bold text-sm">QR</span>
                         </div>
-                        <span class="text-xl font-bold text-gray-900">QuickRental</span>
+                        <span class="text-xl font-bold text-gray-900">Rental Ghana</span>
                     </a>
                 </div>
 
@@ -102,7 +102,7 @@
                                 <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                                     <span class="text-white font-bold text-sm">QR</span>
                                 </div>
-                                <span class="text-lg font-bold text-gray-900">QuickRental</span>
+                                <span class="text-lg font-bold text-gray-900">Rental Ghana</span>
                             </a>
                         </div>
 
@@ -171,7 +171,7 @@
                         <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                             <span class="text-white font-bold text-sm">QR</span>
                         </div>
-                        <span class="text-xl font-bold">QuickRental</span>
+                        <span class="text-xl font-bold">Rental Ghana</span>
                     </div>
                     <p class="text-gray-400">Your trusted partner for reliable car rentals.</p>
                 </div>
@@ -207,7 +207,7 @@
             </div>
             
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} QuickRental. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} Rental Ghana. All rights reserved.</p>
             </div>
         </div>
     </footer>

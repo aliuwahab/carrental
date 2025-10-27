@@ -48,7 +48,7 @@ class BookingConfirmed extends Notification
             ->line('End Date: ' . $this->booking->end_date->format('M d, Y'))
             ->line('Total Amount: $' . number_format($this->booking->total_amount, 2))
             ->action('View Booking', route('dashboard'))
-            ->line('Thank you for choosing QuickRental!');
+            ->line('Thank you for choosing Rental Ghana!');
     }
 
     /**

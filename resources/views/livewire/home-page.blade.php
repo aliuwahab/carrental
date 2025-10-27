@@ -261,7 +261,7 @@
     <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Why Choose QuickRental?</h2>
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Why Choose Rental Ghana?</h2>
                 <p class="text-lg text-gray-600 max-w-2xl mx-auto">We make car rental simple, affordable, and reliable with our comprehensive service offerings</p>
             </div>
             
