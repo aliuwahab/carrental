@@ -75,7 +75,7 @@ class ViewVehicle extends ViewRecord
                             ->label('Gallery Images')
                             ->getStateUsing(function ($record) {
                                 $galleryUrls = $record->getGalleryUrls();
-                                return $galleryUrls->take(8)->toArray();
+                                return array_slice($galleryUrls, 0, 8);
                             })
                             ->size(150)
                             ->limit(8)
