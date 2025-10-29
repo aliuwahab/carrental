@@ -23,8 +23,8 @@
             <div class="hidden lg:flex justify-between h-16">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-sm">QR</span>
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center shadow-md">
+                            <span class="text-white font-bold text-sm">RG</span>
                         </div>
                         <span class="text-xl font-bold text-gray-900">Rental Ghana</span>
                     </a>
@@ -100,8 +100,8 @@
                     <div class="flex items-center justify-between h-16">
                         <div class="flex items-center">
                             <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                    <span class="text-white font-bold text-sm">QR</span>
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center shadow-md">
+                                    <span class="text-white font-bold text-sm">RG</span>
                                 </div>
                                 <span class="text-lg font-bold text-gray-900">Rental Ghana</span>
                             </a>
@@ -170,8 +170,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-sm">QR</span>
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center shadow-md">
+                            <span class="text-white font-bold text-sm">RG</span>
                         </div>
                         <span class="text-xl font-bold">Rental Ghana</span>
                     </div>
