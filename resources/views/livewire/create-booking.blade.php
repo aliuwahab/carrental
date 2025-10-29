@@ -272,11 +272,59 @@
                         </div>
                     </div>
 
-                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+                    @guest
+                        <!-- Guest Information Form -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-8 mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                                <svg class="w-7 h-7 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                Your Information
+                            </h3>
+                            <p class="text-gray-600 mb-6">We'll create an account for you to manage your booking</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                                    <input type="text" 
+                                           wire:model="guestName" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           placeholder="John Doe">
+                                    @error('guestName') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                    <input type="email" 
+                                           wire:model="guestEmail" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           placeholder="john@example.com">
+                                    @error('guestEmail') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                                    <input type="tel" 
+                                           wire:model="guestPhone" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           placeholder="+233 XX XXX XXXX">
+                                    @error('guestPhone') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 bg-white border border-blue-200 rounded-lg p-4">
+                                <p class="text-sm text-gray-600">
+                                    <strong class="text-blue-600">Note:</strong> If you already have an account with this email, we'll associate this booking with your existing account. Otherwise, we'll create a new account for you and send the login details to your email.
+                                </p>
+                            </div>
+                        </div>
+                    @endguest
+
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-6 mb-8">
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
                                 <input type="checkbox" wire:model="termsAccepted" 
-                                       class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                       class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded">
                             </div>
                             <div>
                                 <label class="text-gray-700 font-medium">
@@ -417,6 +465,54 @@
                             </a>
                         </div>
                     @else
+                        @guest
+                            <!-- Guest Information Form -->
+                            <div class="bg-blue-50 border border-blue-200 rounded-xl p-8 mb-8">
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2 flex items-center">
+                                    <svg class="w-7 h-7 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                    Your Information
+                                </h3>
+                                <p class="text-gray-600 mb-6">We'll create an account for you to manage your booking</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                                        <input type="text" 
+                                               wire:model="guestName" 
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="John Doe">
+                                        @error('guestName') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                        <input type="email" 
+                                               wire:model="guestEmail" 
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="john@example.com">
+                                        @error('guestEmail') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                                    </div>
+                                    
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                                        <input type="tel" 
+                                               wire:model="guestPhone" 
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="+233 XX XXX XXXX">
+                                        @error('guestPhone') <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> @enderror
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 bg-white border border-blue-200 rounded-lg p-4">
+                                    <p class="text-sm text-gray-600">
+                                        <strong class="text-blue-600">Note:</strong> If you already have an account with this email, we'll associate this booking with your existing account. Otherwise, we'll create a new account for you and send the login details to your email.
+                                    </p>
+                                </div>
+                            </div>
+                        @endguest
+                        
                         <!-- Create Booking Button -->
                         <div class="text-center py-12">
                             <div class="w-24 h-24 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -430,10 +526,29 @@
                                     class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-12 py-4 rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 font-bold text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                                 Create Booking & Proceed to Payment
                             </button>
+                            
+                            @guest
+                                <p class="mt-6 text-gray-600">
+                                    Already have an account? 
+                                    <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-700 font-semibold">Login here</a>
+                                </p>
+                            @endguest
                         </div>
                     @endif
                 </div>
             </div>
         @endif
     </div>
+
+    @script
+    <script>
+        // Listen for scroll-to-top event from Livewire
+        $wire.on('scroll-to-top', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+    @endscript
 </div>
