@@ -6,6 +6,7 @@ use App\Livewire\VehicleDetail;
 use App\Livewire\CreateBooking;
 use App\Livewire\BookingHistory;
 use App\Livewire\Dashboard;
+use App\Livewire\RentalProperties;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -18,6 +19,7 @@ Route::get('/', HomePage::class)->name('home');
 Route::get('/vehicles', VehicleListing::class)->name('vehicles.index');
 Route::get('/vehicles/{vehicle:slug}', VehicleDetail::class)->name('vehicles.show');
 Route::get('/book/{vehicle:slug}', CreateBooking::class)->name('booking.create');
+Route::get('/rent-a-home', RentalProperties::class)->name('rental.properties');
 
 
 Route::get('dashboard', Dashboard::class)

@@ -20,7 +20,7 @@ class VehicleDetail extends Component
     {
         $this->vehicle = $vehicle->load('currentRate');
         $this->startDate = request('start_date', now()->addDay()->format('Y-m-d'));
-        $this->endDate = request('end_date', now()->addDays(3)->format('Y-m-d'));
+        $this->endDate = request('end_date', now()->addDay()->format('Y-m-d'));
         
         $this->checkAvailability();
     }

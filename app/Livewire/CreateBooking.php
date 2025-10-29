@@ -26,7 +26,7 @@ class CreateBooking extends Component
     {
         $this->vehicle = $vehicle->load('currentRate');
         $this->startDate = request('start_date', now()->addDay()->format('Y-m-d'));
-        $this->endDate = request('end_date', now()->addDays(3)->format('Y-m-d'));
+        $this->endDate = request('end_date', now()->addDay()->format('Y-m-d'));
         
         // Check if we're coming from dashboard to complete payment
         if (request('step') === '3') {

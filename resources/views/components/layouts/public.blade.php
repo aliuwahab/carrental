@@ -32,6 +32,7 @@
 
                 <div class="flex items-center space-x-8">
                     <a href="{{ route('vehicles.index') }}" class="text-gray-700 hover:text-blue-600 transition-colors">Vehicles</a>
+                    <a href="{{ route('rental.properties') }}" class="text-gray-700 hover:text-blue-600 transition-colors">Rent a Home</a>
                     
                     @auth
                         <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600 transition-colors">My Bookings</a>
@@ -118,6 +119,7 @@
                     <div id="mobile-menu" class="hidden bg-white border-t border-gray-200">
                         <div class="px-2 pt-2 pb-3 space-y-1">
                             <a href="{{ route('vehicles.index') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">Vehicles</a>
+                            <a href="{{ route('rental.properties') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">Rent a Home</a>
                             
                             @auth
                                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">My Bookings</a>
