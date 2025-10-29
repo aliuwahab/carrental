@@ -9,8 +9,8 @@ class RentalProperties extends Component
     public $properties = [
         [
             'id' => 1,
-            'name' => '2 Bedrooms House With Private Pool - The Minimalist',
-            'description' => 'Experience ultimate luxury living in this stunning 2-bedroom minimalist house featuring an exclusive private swimming pool. Perfect for families or couples seeking a peaceful retreat in Accra, this modern self-contained compound combines contemporary design with exceptional comfort and privacy. The property features spacious ensuite bedrooms, a fully equipped modern kitchen, and premium amenities throughout. Enjoy your own private oasis with exclusive pool access, perfect for relaxation after exploring the vibrant city. With secure parking, modern appliances, and a serene environment, this property offers the ideal balance of luxury and tranquility for both short getaways and extended stays.',
+            'name' => '2 Bedrooms House With Private Pool - The Minimalist House',
+            'description' => 'Experience ultimate luxury living in this stunning 2-bedroom minimalist house featuring an exclusive private swimming pool in Spintex, Accra. Just 15 minutes from Kotoka International Airport, this modern self-contained compound combines contemporary design with exceptional comfort and privacy. The property features spacious ensuite bedrooms, a fully equipped modern kitchen, and premium amenities throughout. Enjoy your own private oasis with exclusive pool access, perfect for relaxation after exploring the vibrant city. With secure parking, modern appliances, and a serene environment, this property offers the ideal balance of luxury and tranquility for both short getaways and extended stays.',
             'features' => [
                 'Private Swimming Pool',
                 '2 Spacious Ensuite Bedrooms',
@@ -25,7 +25,7 @@ class RentalProperties extends Component
                 '24/7 Security',
                 'Peaceful Location'
             ],
-            'location' => 'Accra, Greater Accra Region, Ghana',
+            'location' => 'Spintex, Accra (15 min from Airport)',
             'airbnb_url' => 'https://www.airbnb.co.uk/rooms/1426062913311569946',
             'image' => 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop'
         ],
