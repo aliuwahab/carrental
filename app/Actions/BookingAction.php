@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Data\CheckAvailabilityData;
 use App\Data\CreateBookingData;
 use App\Data\VehicleFilterData;
+use App\Events\BookingCreated;
 use App\Models\Booking;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\DB;
@@ -77,6 +78,9 @@ class BookingAction
                 'to_status' => 'draft',
                 'reason' => 'Booking created',
             ]);
+
+            // Fire booking created event
+            event(new BookingCreated($booking, $data->is_new_account ?? false));
 
             return $booking;
         });

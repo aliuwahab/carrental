@@ -123,4 +123,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Information
+    |--------------------------------------------------------------------------
+    |
+    | Configure contact information used in notifications and communications.
+    |
+    */
+
+    'whatsapp_number' => env('APP_WHATSAPP_NUMBER', '+1 (555) 123-4567'),
+    'mobile_money_number' => env('APP_MOBILE_MONEY_NUMBER', '+1 (555) 123-4567'),
+
 ];
