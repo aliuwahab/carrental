@@ -62,45 +62,7 @@
 
             <!-- Mobile Navigation -->
             <div class="lg:hidden">
-                @if(request()->routeIs('home') || request()->routeIs('vehicles.index'))
-                    <!-- Breadcrumb Navigation for Home and Vehicles -->
-                    <div class="flex items-center justify-between h-16">
-                        <div class="flex items-center space-x-2 text-sm">
-                            <a href="{{ route('home') }}" class="text-blue-600 hover:text-blue-800 font-medium">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                                </svg>
-                            </a>
-                            <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            @if(request()->routeIs('home'))
-                                <span class="text-gray-600 font-medium">Home</span>
-                            @elseif(request()->routeIs('vehicles.index'))
-                                <span class="text-gray-600 font-medium">Vehicles</span>
-                            @endif
-                        </div>
-
-                        <!-- Mobile User Menu -->
-                        <div class="flex items-center space-x-4">
-                            @auth
-                                <a href="{{ route('dashboard') }}" class="text-sm text-gray-600 hover:text-blue-600 transition-colors">{{ auth()->user()->name }}</a>
-                                <form method="POST" action="{{ route('logout') }}" class="inline">
-                                    @csrf
-                                    <button type="submit" class="text-gray-700 hover:text-blue-600 transition-colors text-sm">
-                                        Logout
-                                    </button>
-                                </form>
-                            @else
-                                <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 transition-colors text-sm">Login</a>
-                                <a href="{{ route('register') }}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                                    Sign Up
-                                </a>
-                            @endauth
-                        </div>
-                    </div>
-                @else
-                    <!-- Mobile Menu with Toggle -->
+                <!-- Mobile Menu with Toggle -->
                     <div class="flex items-center justify-between h-16">
                         <div class="flex items-center">
                             <a href="{{ route('home') }}" class="flex items-center space-x-2">
@@ -158,7 +120,6 @@
                             @endauth
                         </div>
                     </div>
-                @endif
             </div>
         </div>
     </nav>
