@@ -42,14 +42,16 @@ class HomePage extends Component
             'endDate.after' => 'Return date must be after pickup date.',
         ]);
 
-        // Redirect to vehicle listing page with search parameters
-        return redirect()->route('vehicles.index', [
-            'start_date' => $this->startDate,
-            'end_date' => $this->endDate,
-            'type' => $this->vehicleType,
-            'min_price' => $this->minPrice,
-            'max_price' => $this->maxPrice,
-        ]);
+        // Redirect to vehicle listing page with search parameters and scroll to results
+        return redirect()->to(
+            route('vehicles.index', [
+                'start_date' => $this->startDate,
+                'end_date' => $this->endDate,
+                'type' => $this->vehicleType,
+                'min_price' => $this->minPrice,
+                'max_price' => $this->maxPrice,
+            ]) . '#results-section'
+        );
     }
 
     public function performSearch()
