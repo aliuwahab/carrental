@@ -6,9 +6,9 @@
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
             <div class="text-center">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                    Rent a 
+                    Book a 
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                        Home
+                        Stay
                     </span>
                 </h1>
                 <p class="text-xl lg:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
@@ -26,7 +26,7 @@
                     <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
                         <!-- Property Image -->
                         <div class="relative overflow-hidden h-64">
-                            <img src="{{ $property['image'] }}" 
+                            <img src="{{ asset($property['image']) }}" 
                                  alt="{{ $property['name'] }}" 
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
