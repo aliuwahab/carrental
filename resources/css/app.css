@@ -66,26 +66,36 @@ select:focus[data-flux-control] {
 } */
 
 /* Brand Colors for Auth Pages */
-@layer components {
-    /* Primary buttons with brand gradient */
-    flux-button[variant="primary"],
-    [data-flux-button][variant="primary"] {
-        @apply bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 !important;
-        @apply border-0 shadow-lg hover:shadow-xl !important;
-        @apply transition-all duration-300 !important;
-    }
-    
-    /* Links with brand color */
-    flux-link,
-    [data-flux-link] {
-        @apply text-blue-600 hover:text-blue-700 !important;
-        @apply font-medium transition-colors !important;
-    }
-    
-    /* Input focus ring with brand color */
-    input:focus[data-flux-control],
-    textarea:focus[data-flux-control],
-    select:focus[data-flux-control] {
-        @apply ring-blue-600 !important;
-    }
+flux-button[variant="primary"],
+[data-flux-button][variant="primary"] {
+    background: linear-gradient(to right, #2563eb, #0891b2);
+    border: 0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+flux-button[variant="primary"]:hover,
+[data-flux-button][variant="primary"]:hover {
+    background: linear-gradient(to right, #1d4ed8, #0e7490);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Links with brand color */
+flux-link,
+[data-flux-link] {
+    color: #2563eb;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+flux-link:hover,
+[data-flux-link]:hover {
+    color: #1d4ed8;
+}
+
+/* Input focus ring with brand color */
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    --tw-ring-color: #2563eb;
 }
