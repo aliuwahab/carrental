@@ -19,70 +19,65 @@
     </section>
 
     <!-- Properties Section -->
-    <section class="py-16 bg-white">
+    <section class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 @foreach($properties as $property)
-                    <div class="group cursor-pointer">
-                        <!-- Property Image -->
-                        <div class="relative overflow-hidden rounded-xl mb-3">
+                    <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                        <!-- Property Image - Improved -->
+                        <div class="relative overflow-hidden">
                             <div class="aspect-[4/3] w-full">
                                 <img src="{{ asset($property['image']) }}" 
                                      alt="{{ $property['name'] }}" 
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <h3 class="text-2xl font-bold text-white mb-1 drop-shadow-lg">{{ $property['name'] }}</h3>
+                                <p class="text-white/90 text-sm flex items-center drop-shadow-md">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ $property['location'] }}
+                                </p>
                             </div>
                         </div>
 
-                        <!-- Property Info -->
-                        <div class="space-y-2">
-                            <!-- Location -->
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                                </svg>
-                                {{ $property['location'] }}
-                            </div>
-
-                            <!-- Title -->
-                            <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
-                                {{ $property['name'] }}
-                            </h3>
-
-                            <!-- Description -->
-                            <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">
+                        <!-- Property Details -->
+                        <div class="p-6">
+                            <p class="text-gray-700 mb-6 leading-relaxed">
                                 {{ $property['description'] }}
                             </p>
 
-                            <!-- Key Features -->
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                @foreach(array_slice($property['features'], 0, 4) as $feature)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                                        {{ $feature }}
-                                    </span>
-                                @endforeach
-                                @if(count($property['features']) > 4)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                                        +{{ count($property['features']) - 4 }} more
-                                    </span>
-                                @endif
+                            <!-- Features -->
+                            <div class="mb-6">
+                                <h4 class="font-semibold text-gray-900 mb-3">Features:</h4>
+                                <div class="grid grid-cols-2 gap-2">
+                                    @foreach($property['features'] as $feature)
+                                        <div class="flex items-center text-sm text-gray-600">
+                                            <svg class="w-4 h-4 mr-2 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                            {{ $feature }}
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
 
                             <!-- Book Button -->
-                            <div class="pt-3">
-                                <a 
-                                    href="{{ $property['airbnb_url'] }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="inline-flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-200 font-medium text-base shadow-sm hover:shadow-md">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                    Book on Airbnb
-                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                    </svg>
-                                </a>
-                            </div>
+                            <a 
+                                href="{{ $property['airbnb_url'] }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-4 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Book on Airbnb
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
                         </div>
                     </div>
                 @endforeach
