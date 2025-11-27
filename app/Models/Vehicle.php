@@ -26,11 +26,13 @@ class Vehicle extends Model implements HasMedia
         'fuel_type',
         'main_image',
         'is_active',
+        'self_driven',
     ];
 
     protected $casts = [
         'features' => 'array',
         'is_active' => 'boolean',
+        'self_driven' => 'boolean',
     ];
 
     public function getSlugOptions(): SlugOptions

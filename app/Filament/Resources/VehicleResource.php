@@ -157,6 +157,12 @@ class VehicleResource extends Resource
                             ->default(true)
                             ->label('Available for Rental')
                             ->helperText('Toggle to make this vehicle available for rental on the website.'),
+                        
+                        Forms\Components\Toggle::make('self_driven')
+                            ->required()
+                            ->default(true)
+                            ->label('Self-Driven')
+                            ->helperText('Toggle off if this vehicle comes with a driver provided by the company.'),
                     ])->columns(1),
                 
                 Forms\Components\Section::make('Initial Rate')
@@ -252,6 +258,14 @@ class VehicleResource extends Resource
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
                     ->falseColor('danger'),
+                
+                Tables\Columns\IconColumn::make('self_driven')
+                    ->boolean()
+                    ->label('Self-Driven')
+                    ->trueIcon('heroicon-o-user')
+                    ->falseIcon('heroicon-o-user-group')
+                    ->trueColor('info')
+                    ->falseColor('warning'),
                 
                 Tables\Columns\TextColumn::make('bookings_count')
                     ->counts('bookings')
