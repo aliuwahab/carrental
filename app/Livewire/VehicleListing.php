@@ -37,7 +37,13 @@ class VehicleListing extends Component
             'endDate' => 'required|date|after:startDate',
         ]);
 
+        // Add minimum delay to show loading state (prevents flicker)
+        usleep(300000); // 300ms delay
+
         $this->resetPage();
+        
+        // Dispatch browser event to scroll to results
+        $this->dispatch('scroll-to-results');
     }
 
     public function sortBy($field)

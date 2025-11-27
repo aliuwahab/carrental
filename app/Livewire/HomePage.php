@@ -42,7 +42,14 @@ class HomePage extends Component
             'endDate.after' => 'Return date must be after pickup date.',
         ]);
 
-        $this->performSearch();
+        // Redirect to vehicle listing page with search parameters
+        return redirect()->route('vehicles.index', [
+            'start_date' => $this->startDate,
+            'end_date' => $this->endDate,
+            'type' => $this->vehicleType,
+            'min_price' => $this->minPrice,
+            'max_price' => $this->maxPrice,
+        ]);
     }
 
     public function performSearch()

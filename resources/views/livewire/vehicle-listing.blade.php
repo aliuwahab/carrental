@@ -75,12 +75,18 @@
                     
                     <div class="flex items-end">
                         <button type="submit" 
-                                class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                wire:loading.attr="disabled"
+                                class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-75 disabled:cursor-not-allowed">
                             <span class="flex items-center justify-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg wire:loading.remove wire:target="searchVehicles" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
-                                Search
+                                <svg wire:loading wire:target="searchVehicles" class="animate-spin w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span wire:loading.remove wire:target="searchVehicles">Search</span>
+                                <span wire:loading wire:target="searchVehicles">Searching...</span>
                             </span>
                         </button>
                     </div>
@@ -149,8 +155,22 @@
         </div>
     </div>
 
+    <!-- Loading Overlay -->
+    <div wire:loading wire:target="searchVehicles" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm mx-4">
+            <div class="flex flex-col items-center">
+                <svg class="animate-spin h-12 w-12 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Searching Vehicles</h3>
+                <p class="text-gray-600 text-center">Please wait while we find the perfect vehicles for you...</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Vehicle Grid -->
-    <div class="py-12 bg-gray-50">
+    <div id="results-section" class="py-12 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             @if($vehicles->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -255,4 +275,21 @@
             @endif
         </div>
     </div>
+
+    <!-- Scroll to Results Script -->
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('scroll-to-results', () => {
+                setTimeout(() => {
+                    const resultsSection = document.getElementById('results-section');
+                    if (resultsSection) {
+                        resultsSection.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }
+                }, 100);
+            });
+        });
+    </script>
 </div>
