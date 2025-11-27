@@ -27,7 +27,7 @@ class RentalProperties extends Component
             ],
             'location' => 'Spintex, Accra (15 min from Airport)',
             'airbnb_url' => 'https://www.airbnb.co.uk/rooms/1426062913311569946',
-            'image' => '/img/stay/2-bedroom-private-pool.avif'
+            'image' => '/img/stay/pool.jpeg'
         ],
         [
             'id' => 2,
@@ -49,7 +49,7 @@ class RentalProperties extends Component
             ],
             'location' => 'Spintex, Accra (15 min from Airport)',
             'airbnb_url' => 'https://www.airbnb.co.uk/rooms/1327661956927938458',
-            'image' => '/img/stay/2-bedroom-self-compound.avif'
+            'image' => '/img/stay/none-pool.jpeg'
         ]
     ];
 
