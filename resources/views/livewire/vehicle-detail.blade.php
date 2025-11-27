@@ -156,6 +156,24 @@
                                 <span class="text-sm lg:text-base text-gray-900 font-semibold">{{ $vehicle->seats }}</span>
                             </div>
                             <div class="flex items-center justify-between py-2 lg:py-3 border-b border-gray-200">
+                                <span class="text-sm lg:text-base font-medium text-gray-700">Driver:</span>
+                                @if($vehicle->self_driven)
+                                    <span class="inline-flex items-center text-sm lg:text-base text-gray-900 font-semibold">
+                                        <svg class="w-4 h-4 lg:w-5 lg:h-5 text-blue-600 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                        You drive
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center text-sm lg:text-base text-gray-900 font-semibold">
+                                        <svg class="w-4 h-4 lg:w-5 lg:h-5 text-orange-600 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                        </svg>
+                                        Provided
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="flex items-center justify-between py-2 lg:py-3 border-b border-gray-200">
                                 <span class="text-sm lg:text-base font-medium text-gray-700">Daily Rate:</span>
                                 <span class="text-blue-600 font-bold text-base lg:text-lg">${{ number_format($vehicle->currentRate?->daily_rate ?? 0, 2) }}</span>
                             </div>
