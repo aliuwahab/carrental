@@ -175,7 +175,7 @@
             @if($vehicles->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     @foreach($vehicles as $vehicle)
-                        <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                        <a href="{{ route('vehicles.show', $vehicle->slug) }}" class="block group cursor-pointer bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                             <div class="relative overflow-hidden">
                                 @if($vehicle->getMainImageUrl())
                                     <img src="{{ $vehicle->getMainImageUrl() }}" 
@@ -234,13 +234,12 @@
                                         </span>
                                         <span class="text-gray-500 text-sm">/day</span>
                                     </div>
-                                    <a href="{{ route('vehicles.show', $vehicle->slug) }}" 
-                                       class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                    <span class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg group-hover:from-blue-700 group-hover:to-cyan-700 transition-all duration-300 font-semibold shadow-lg group-hover:shadow-xl">
                                         View
-                                    </a>
+                                    </span>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
 
