@@ -35,11 +35,11 @@
                 </div>
 
                 <div class="flex items-center space-x-8">
-                    <a href="{{ route('vehicles.index') }}" class="text-gray-700 hover:text-blue-600 transition-colors">Vehicles</a>
-                    <a href="{{ route('rental.properties') }}" class="text-gray-700 hover:text-blue-600 transition-colors">Rent a Home</a>
+                    <a href="{{ route('vehicles.index') }}" class="{{ request()->routeIs('vehicles.*') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }} transition-colors">Rent a Vehicle</a>
+                    <a href="{{ route('rental.properties') }}" class="{{ request()->routeIs('rental.*') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }} transition-colors">Book a Stay</a>
                     
                     @auth
-                        <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-blue-600 transition-colors">My Bookings</a>
+                        <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600' }} transition-colors">My Bookings</a>
                         <div class="flex items-center space-x-4">
                             <span class="text-sm text-gray-600">Welcome, {{ auth()->user()->name }}</span>
                             <form method="POST" action="{{ route('logout') }}" class="inline">
@@ -84,11 +84,11 @@
                     <!-- Mobile Menu Dropdown -->
                     <div id="mobile-menu" class="hidden bg-white border-t border-gray-200">
                         <div class="px-2 pt-2 pb-3 space-y-1">
-                            <a href="{{ route('vehicles.index') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">Vehicles</a>
-                            <a href="{{ route('rental.properties') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">Rent a Home</a>
+                            <a href="{{ route('vehicles.index') }}" class="block px-3 py-2 text-base font-medium {{ request()->routeIs('vehicles.*') ? 'text-blue-600 bg-blue-50 font-semibold' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50' }} rounded-md">Rent a Vehicle</a>
+                            <a href="{{ route('rental.properties') }}" class="block px-3 py-2 text-base font-medium {{ request()->routeIs('rental.*') ? 'text-blue-600 bg-blue-50 font-semibold' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50' }} rounded-md">Book a Stay</a>
                             
                             @auth
-                                <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md">My Bookings</a>
+                                <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-base font-medium {{ request()->routeIs('dashboard') ? 'text-blue-600 bg-blue-50 font-semibold' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50' }} rounded-md">My Bookings</a>
                                 <div class="border-t border-gray-200 pt-4 pb-3">
                                     <div class="flex items-center px-3">
                                         <div class="flex-shrink-0">

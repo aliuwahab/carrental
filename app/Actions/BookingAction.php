@@ -114,7 +114,7 @@ class BookingAction
         });
     }
 
-    public function cancelBooking(Booking $booking, string $reason = null): Booking
+    public function cancelBooking(Booking $booking, ?string $reason = null): Booking
     {
         return DB::transaction(function () use ($booking, $reason) {
             if (!$booking->canBeCancelled()) {
