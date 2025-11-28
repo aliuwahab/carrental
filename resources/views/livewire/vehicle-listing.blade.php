@@ -263,11 +263,13 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="mt-12 flex justify-center">
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-4">
-                        {{ $vehicles->links() }}
+                @if($vehicles->hasPages())
+                    <div class="mt-12 flex justify-center">
+                        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-4">
+                            {{ $vehicles->links() }}
+                        </div>
                     </div>
-                </div>
+                @endif
             @else
                 <div class="text-center py-16">
                     <div class="w-32 h-32 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6">
