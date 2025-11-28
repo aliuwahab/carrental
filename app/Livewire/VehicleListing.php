@@ -23,8 +23,8 @@ class VehicleListing extends Component
 
     public function mount()
     {
-        $this->startDate = request('start_date', now()->addDay()->format('Y-m-d'));
-        $this->endDate = request('end_date', now()->addDays(3)->format('Y-m-d'));
+        $this->startDate = request('start_date', null);
+        $this->endDate = request('end_date', null);
         $this->vehicleType = request('type', '');
         $this->minPrice = request('min_price', '');
         $this->maxPrice = request('max_price', '');
@@ -58,32 +58,49 @@ class VehicleListing extends Component
 
     public function adjustEndDate()
     {
-        // If we have both dates, maintain the rental duration
-        if ($this->startDate && $this->endDate) {
-            $oldStart = \Carbon\Carbon::parse($this->startDate);
-            $oldEnd = \Carbon\Carbon::parse($this->endDate);
-            $rentalDays = $oldStart->diffInDays($oldEnd) + 1;
-            
-            // Set new end date maintaining the same rental duration
+        // When start date is set, automatically set end date to next day
+        if ($this->startDate) {
             $newStart = \Carbon\Carbon::parse($this->startDate);
-            $this->endDate = $newStart->addDays($rentalDays - 1)->format('Y-m-d');
-            
-            $this->searchVehicles();
+            $this->endDate = $newStart->addDay()->format('Y-m-d');
         }
     }
 
     public function render()
     {
-        $filterData = VehicleFilterData::from([
-            'start_date' => Carbon::parse($this->startDate),
-            'end_date' => Carbon::parse($this->endDate),
-            'type' => $this->vehicleType ?: null,
-            'min_price' => $this->minPrice ? (float) $this->minPrice : null,
-            'max_price' => $this->maxPrice ? (float) $this->maxPrice : null,
-        ]);
+        // If dates are not set, show all active vehicles
+        if (!$this->startDate || !$this->endDate) {
+            $query = Vehicle::active()->with('currentRate');
+            
+            // Apply filters
+            if ($this->vehicleType) {
+                $query->where('type', $this->vehicleType);
+            }
+            
+            if ($this->minPrice || $this->maxPrice) {
+                $query->whereHas('currentRate', function ($q) {
+                    if ($this->minPrice) {
+                        $q->where('daily_rate', '>=', (float) $this->minPrice);
+                    }
+                    if ($this->maxPrice) {
+                        $q->where('daily_rate', '<=', (float) $this->maxPrice);
+                    }
+                });
+            }
+            
+            $vehicles = $query->get();
+        } else {
+            // Use availability filtering when dates are provided
+            $filterData = VehicleFilterData::from([
+                'start_date' => Carbon::parse($this->startDate),
+                'end_date' => Carbon::parse($this->endDate),
+                'type' => $this->vehicleType ?: null,
+                'min_price' => $this->minPrice ? (float) $this->minPrice : null,
+                'max_price' => $this->maxPrice ? (float) $this->maxPrice : null,
+            ]);
 
-        $bookingAction = app(BookingAction::class);
-        $vehicles = $bookingAction->getAvailableVehicles($filterData);
+            $bookingAction = app(BookingAction::class);
+            $vehicles = $bookingAction->getAvailableVehicles($filterData);
+        }
 
         // Apply sorting
         $vehicles = $vehicles->sortBy(function ($vehicle) {
