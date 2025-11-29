@@ -39,7 +39,7 @@ class BookingAction
     {
         return DB::transaction(function () use ($data) {
             $vehicle = Vehicle::findOrFail($data->vehicle_id);
-            $days = $data->start_date->diffInDays($data->end_date) + 1;
+            $days = $data->start_date->diffInDays($data->end_date);
 
             // Check availability
             $availabilityData = CheckAvailabilityData::from([

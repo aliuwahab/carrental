@@ -72,7 +72,7 @@ class CreateBooking extends Component
     public function calculatePrice()
     {
         if ($this->startDate && $this->endDate) {
-            $this->rentalDays = Carbon::parse($this->startDate)->diffInDays(Carbon::parse($this->endDate)) + 1;
+            $this->rentalDays = Carbon::parse($this->startDate)->diffInDays(Carbon::parse($this->endDate));
             $bookingAction = app(BookingAction::class);
             $this->totalPrice = $bookingAction->calculatePrice($this->vehicle, $this->rentalDays);
         }
@@ -85,15 +85,10 @@ class CreateBooking extends Component
 
     public function adjustEndDate()
     {
-        // If we have both dates, maintain the rental duration
-        if ($this->startDate && $this->endDate) {
-            $oldStart = Carbon::parse($this->startDate);
-            $oldEnd = Carbon::parse($this->endDate);
-            $rentalDays = $oldStart->diffInDays($oldEnd) + 1;
-            
-            // Set new end date maintaining the same rental duration
+        // When start date changes, set end date to next day
+        if ($this->startDate) {
             $newStart = Carbon::parse($this->startDate);
-            $this->endDate = $newStart->addDays($rentalDays - 1)->format('Y-m-d');
+            $this->endDate = $newStart->addDay()->format('Y-m-d');
             
             $this->calculatePrice();
         }
