@@ -168,30 +168,32 @@ class CreateBooking extends Component
 
             // If user is not authenticated, create or find user account
             if (!$userId) {
-                $user = User::where('email', $this->guestEmail)->first();
+                // Check if user exists by email or phone
+                $user = User::where('email', $this->guestEmail)
+                    ->orWhere('phone', $this->guestPhone)
+                    ->first();
 
-                if (!$user) {
-                    // Create new user account
-                    $this->temporaryPassword = Str::random(12);
-
-                    $user = User::create([
-                        'name' => $this->guestName,
-                        'email' => $this->guestEmail,
-                        'phone' => $this->guestPhone,
-                        'password' => Hash::make($this->temporaryPassword),
-                        'role' => 'customer',
-                    ]);
-
-                    $isNewAccount = true;
-
-                    // Fire event for new account creation
-                    event(new GuestAccountCreated($user, $this->temporaryPassword));
-                } else {
-                    // Update phone if provided and user exists
-                    if ($this->guestPhone && !$user->phone) {
-                        $user->update(['phone' => $this->guestPhone]);
-                    }
+                if ($user) {
+                    // User exists - require them to login
+                    $identifier = $user->email === $this->guestEmail ? 'email' : 'phone number';
+                    throw new \Exception("An account already exists with this {$identifier}. Please login to continue with your booking.");
                 }
+
+                // Create new user account
+                $this->temporaryPassword = Str::random(12);
+
+                $user = User::create([
+                    'name' => $this->guestName,
+                    'email' => $this->guestEmail,
+                    'phone' => $this->guestPhone,
+                    'password' => Hash::make($this->temporaryPassword),
+                    'role' => 'customer',
+                ]);
+
+                $isNewAccount = true;
+
+                // Fire event for new account creation
+                event(new GuestAccountCreated($user, $this->temporaryPassword));
 
                 $userId = $user->id;
             }
