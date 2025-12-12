@@ -12,6 +12,13 @@ class SendBookingConfirmation implements ShouldQueue
     use InteractsWithQueue;
 
     /**
+     * The number of seconds to wait before processing the job.
+     *
+     * @var int
+     */
+    public $delay = 300; // 5 minutes delay
+
+    /**
      * Handle the event.
      */
     public function handle(BookingCreated $event): void
