@@ -23,12 +23,12 @@ class CreateBooking extends Component
     public $totalPrice = 0;
     public $termsAccepted = false;
     public $notes = '';
-    
+
     // Guest information
     public $guestName = '';
     public $guestEmail = '';
     public $guestPhone = '';
-    
+
     public $step = 1; // 1: Review, 2: Terms, 3: Payment
     public $booking = null;
     public $temporaryPassword = null;
@@ -38,18 +38,18 @@ class CreateBooking extends Component
         $this->vehicle = $vehicle->load('currentRate');
         $this->startDate = request('start_date', now()->addDay()->format('Y-m-d'));
         $this->endDate = request('end_date', now()->addDay()->format('Y-m-d'));
-        
+
         // Check if we're coming from dashboard to complete payment
         if (request('step') === '3') {
             $this->step = 3;
-            
+
             // If booking_id is provided, load that specific booking
             if (request('booking_id')) {
                 $this->booking = auth()->user()->bookings()
                     ->where('id', request('booking_id'))
                     ->where('status', 'pending')
                     ->first();
-                
+
                 if ($this->booking) {
                     // Update dates from the existing booking
                     $this->startDate = $this->booking->start_date->format('Y-m-d');
@@ -65,7 +65,7 @@ class CreateBooking extends Component
                     ->first();
             }
         }
-        
+
         $this->calculatePrice();
     }
 
@@ -89,7 +89,7 @@ class CreateBooking extends Component
         if ($this->startDate) {
             $newStart = Carbon::parse($this->startDate);
             $this->endDate = $newStart->addDay()->format('Y-m-d');
-            
+
             $this->calculatePrice();
         }
     }
@@ -165,15 +165,15 @@ class CreateBooking extends Component
         try {
             $userId = auth()->id();
             $isNewAccount = false;
-            
+
             // If user is not authenticated, create or find user account
             if (!$userId) {
                 $user = User::where('email', $this->guestEmail)->first();
-                
+
                 if (!$user) {
                     // Create new user account
                     $this->temporaryPassword = Str::random(12);
-                    
+
                     $user = User::create([
                         'name' => $this->guestName,
                         'email' => $this->guestEmail,
@@ -181,9 +181,9 @@ class CreateBooking extends Component
                         'password' => Hash::make($this->temporaryPassword),
                         'role' => 'customer',
                     ]);
-                    
+
                     $isNewAccount = true;
-                    
+
                     // Fire event for new account creation
                     event(new GuestAccountCreated($user, $this->temporaryPassword));
                 } else {
@@ -192,12 +192,12 @@ class CreateBooking extends Component
                         $user->update(['phone' => $this->guestPhone]);
                     }
                 }
-                
+
                 $userId = $user->id;
             }
-            
+
             $bookingAction = app(BookingAction::class);
-            
+
             $bookingData = CreateBookingData::from([
                 'vehicle_id' => $this->vehicle->id,
                 'start_date' => Carbon::parse($this->startDate),
@@ -208,24 +208,24 @@ class CreateBooking extends Component
             ]);
 
             $this->booking = $bookingAction->createBooking($bookingData);
-            
+
             // Update booking status and set 1-hour expiration
             $this->booking->update([
                 'status' => 'pending',
                 'expires_at' => now()->addHour(), // 1 hour to complete payment
             ]);
-            
+
             // Fire event for booking creation
             event(new BookingCreated($this->booking, $isNewAccount));
-            
+
             $message = 'Booking created successfully! Please complete payment to confirm your reservation.';
             if ($isNewAccount) {
                 $message .= ' An account has been created for you. Check your email for login details.';
             }
-            
+
             session()->flash('success', $message);
             $this->dispatch('scroll-to-top');
-            
+
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
             $this->dispatch('scroll-to-top');
